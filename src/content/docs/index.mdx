@@ -1,40 +1,58 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
-template: splash # Remove or comment out this line to display the site sidebar on this page.
+title: 欢迎来到软考监理师教学平台
+description: 系统化学习信息系统监理师考试内容
+template: splash
 hero:
-  tagline: Congrats on setting up a new Starlight project!
+  title: |
+    软考<span class="text-gradient">监理师</span>
+    教学平台
+  tagline: 系统化的备考指南，助你高效通过中级信息系统监理师考试
   image:
     file: ../../assets/houston.webp
   actions:
-    - text: Example Guide
-      link: /guides/example/
+    - text: 开始学习
+      link: /guides/study-guide/
       icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
+      variant: primary
+    - text: 查看大纲
+      link: /guides/exam-outline/
       icon: external
       variant: minimal
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
-## Next steps
+## 平台特色
 
-<CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
-	</Card>
-	<Card title="Change page layout" icon="document">
-		Delete `template: splash` in `src/content/docs/index.mdx` to display a
-		sidebar on this page.
-	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
-	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
-	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
-	</Card>
+<CardGrid>
+  <Card title="📚 系统化教学" icon="document">
+    按章节系统讲解考试内容，知识点串联清晰，循序渐进
+  </Card>
+  <Card title="💡 通俗易懂" icon="information">
+    专业概念配合通俗例子，降低学习门槛，快速掌握
+  </Card>
+  <Card title="🎯 重点突出" icon="star">
+    标注高频考点和重要程度，提高备考效率
+  </Card>
+  <Card title="✏️ 练习巩固" icon="pencil">
+    每章配套练习题和历年真题，边学边练，及时巩固
+  </Card>
 </CardGrid>
+
+## 课程结构
+
+本平台按照考试大纲分为两大部分：
+
+### 第一篇：基础知识
+涵盖信息化发展、信息系统工程、信息网络系统、信息资源系统、信息应用系统、信息安全、运行维护等7个章节。
+
+### 第二篇：监理知识
+重点讲解监理概论、质量控制、进度与成本控制、合同管理、信息管理、组织协调等6个章节。
+
+## 开始学习
+
+👉 查看 [学习指南](/guides/study-guide/) 了解如何高效使用本平台
+
+👉 浏览 [考试大纲](/guides/exam-outline/) 熟悉考试要求
+
+👉 开始第一章 [信息化发展](/chapter-01/) 的学习

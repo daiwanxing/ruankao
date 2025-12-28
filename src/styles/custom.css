@@ -1,0 +1,113 @@
+/* 自定义样式 */
+
+/* 表格样式优化 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+th {
+  background: linear-gradient(to bottom, #f3f4f6, #e5e7eb);
+  font-weight: 600;
+  padding: 1rem;
+  text-align: left;
+}
+
+td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* 知识点标签 */
+.badge-important {
+  background: #ef4444;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.badge-frequency {
+  background: #3b82f6;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+}
+
+.badge-difficulty {
+  background: #10b981;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+}
+
+/* 记忆口诀样式 */
+.memory-formula {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-left: 4px solid #f59e0b;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #92400e;
+  text-align: center;
+}
+
+/* 重点内容高亮 */
+.highlight-important {
+  background: #fef2f2;
+  border-left: 4px solid #ef4444;
+  padding: 1rem 1.5rem;
+  margin: 1rem 0;
+  border-radius: 4px;
+}
+
+.highlight-tip {
+  background: #f0fdf4;
+  border-left: 4px solid #10b981;
+  padding: 1rem 1.5rem;
+  margin: 1rem 0;
+  border-radius: 4px;
+}
+
+/* 代码块优化 */
+pre {
+  border-radius: 8px;
+  padding: 1.5rem !important;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+  table {
+    font-size: 0.875rem;
+  }
+  
+  th, td {
+    padding: 0.5rem;
+  }
+  
+  .memory-formula {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+}
+
+/* 暗黑模式支持 */
+:root[data-theme='dark'] th {
+  background: linear-gradient(to bottom, #374151, #1f2937);
+}
+
+:root[data-theme='dark'] td {
+  border-bottom-color: #374151;
+}
+
+:root[data-theme='dark'] .memory-formula {
+  background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
+  color: #fef3c7;
+}

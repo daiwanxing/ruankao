@@ -1,0 +1,147 @@
+---
+interface Props {
+  title: string;
+  formula: string;
+  importance?: number;
+  category?: 'formula' | 'tip' | 'key-point';
+}
+
+const { title, formula, importance = 5, category = 'formula' } = Astro.props;
+
+const categoryStyles = {
+  'formula': 'memory-card-formula',
+  'tip': 'memory-card-tip',
+  'key-point': 'memory-card-keypoint',
+};
+---
+
+<div class={`memory-card ${categoryStyles[category]}`}>
+  <div class="card-header">
+    <h4 class="card-title">{title}</h4>
+    <span class="importance" title={`重要程度：${importance}/5`}>
+      {'⭐'.repeat(importance)}
+    </span>
+  </div>
+  <div class="card-body">
+    <p class="formula">{formula}</p>
+  </div>
+</div>
+
+<style>
+  .memory-card {
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .memory-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+  
+  .memory-card-formula {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-left: 6px solid #f59e0b;
+  }
+  
+  .memory-card-tip {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    border-left: 6px solid #3b82f6;
+  }
+  
+  .memory-card-keypoint {
+    background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+    border-left: 6px solid #ec4899;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .card-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1f2937;
+  }
+  
+  .importance {
+    font-size: 1rem;
+    line-height: 1;
+  }
+  
+  .formula {
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 0;
+    padding: 1rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.5);
+  }
+  
+  .memory-card-formula .formula {
+    color: #92400e;
+  }
+  
+  .memory-card-tip .formula {
+    color: #1e40af;
+  }
+  
+  .memory-card-keypoint .formula {
+    color: #9f1239;
+  }
+  
+  /* 响应式 */
+  @media (max-width: 768px) {
+    .memory-card {
+      padding: 1rem;
+    }
+    
+    .card-title {
+      font-size: 1rem;
+    }
+    
+    .formula {
+      font-size: 1.1rem;
+      padding: 0.75rem;
+    }
+  }
+  
+  /* 暗黑模式 */
+  :global([data-theme='dark']) .memory-card-formula {
+    background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
+  }
+  
+  :global([data-theme='dark']) .memory-card-formula .card-title,
+  :global([data-theme='dark']) .memory-card-formula .formula {
+    color: #fef3c7;
+  }
+  
+  :global([data-theme='dark']) .memory-card-tip {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  }
+  
+  :global([data-theme='dark']) .memory-card-tip .card-title,
+  :global([data-theme='dark']) .memory-card-tip .formula {
+    color: #dbeafe;
+  }
+  
+  :global([data-theme='dark']) .memory-card-keypoint {
+    background: linear-gradient(135deg, #831843 0%, #9f1239 100%);
+  }
+  
+  :global([data-theme='dark']) .memory-card-keypoint .card-title,
+  :global([data-theme='dark']) .memory-card-keypoint .formula {
+    color: #fce7f3;
+  }
+  
+  :global([data-theme='dark']) .formula {
+    background: rgba(0, 0, 0, 0.2);
+  }
+</style>
