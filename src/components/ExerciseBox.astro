@@ -71,15 +71,15 @@ const { question, options, answer, explanation } = Astro.props;
   .answer-section {
     margin-top: 1.5rem;
     padding: 1.25rem;
-    background: var(--sl-color-bg-accent);
+    background: #dcfce7;
     border-radius: 8px;
-    border: 1px solid var(--sl-color-accent-low);
+    border: 2px solid #22c55e;
   }
   
   .answer-section summary {
     cursor: pointer;
     font-weight: 600;
-    color: var(--sl-color-accent);
+    color: #15803d;
     user-select: none;
     list-style: none;
   }
@@ -90,6 +90,8 @@ const { question, options, answer, explanation } = Astro.props;
   
   .answer-section[open] summary {
     margin-bottom: 1rem;
+    border-bottom: 1px solid #86efac;
+    padding-bottom: 0.75rem;
   }
   
   .answer-content {
@@ -97,11 +99,36 @@ const { question, options, answer, explanation } = Astro.props;
   }
   
   .answer-content p {
-    margin: 0.5rem 0;
-    line-height: 1.6;
+    margin: 0.75rem 0;
+    line-height: 1.8;
+    color: #14532d;
+    font-size: 1rem;
   }
   
   .answer-content strong {
-    color: var(--sl-color-white);
+    color: #166534;
+    font-weight: 700;
+  }
+
+  /* 暗黑模式 */
+  :global([data-theme='dark']) .answer-section {
+    background: #14532d;
+    border-color: #22c55e;
+  }
+  
+  :global([data-theme='dark']) .answer-section summary {
+    color: #86efac;
+  }
+  
+  :global([data-theme='dark']) .answer-section[open] summary {
+    border-bottom-color: #166534;
+  }
+  
+  :global([data-theme='dark']) .answer-content p {
+    color: #dcfce7;
+  }
+  
+  :global([data-theme='dark']) .answer-content strong {
+    color: #4ade80;
   }
 </style>

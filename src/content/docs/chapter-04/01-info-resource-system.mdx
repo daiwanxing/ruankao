@@ -1,0 +1,199 @@
+---
+title: 第4章 信息资源系统
+description: 掌握数据库系统、数据仓库、数据标准化及大数据技术的核心概念
+sidebar:
+  order: 1
+  badge:
+    text: 基础
+    variant: note
+---
+
+import MemoryCard from '../../../components/MemoryCard.astro';
+import ExerciseBox from '../../../components/ExerciseBox.astro';
+import { Card } from '@astrojs/starlight/components';
+
+## 4.1 数据库系统
+
+### 一、教学目标
+
+掌握数据库系统的概念、组成、数据模型、范式和事务管理。
+
+### 二、核心讲解
+
+#### 1. 数据库系统组成
+
+<MemoryCard 
+  title="数据库系统三层模式"
+  formula="外模式→模式→内模式（用户→逻辑→物理）"
+  importance={5}
+  category="formula"
+/>
+
+| 模式 | 说明 |
+|------|------|
+| **外模式** | 用户视图，某一用户看到的数据库逻辑表示 |
+| **模式** | 逻辑模式，数据库总体逻辑结构的描述 |
+| **内模式** | 存储模式，数据物理存储结构的描述 |
+
+#### 2. 数据模型
+
+| 数据模型 | 特点 |
+|----------|------|
+| **层次模型** | 树形结构 |
+| **网状模型** | 图形结构 |
+| **关系模型** | 二维表结构（最常用） |
+
+#### 3. 数据库范式
+
+<MemoryCard 
+  title="范式口诀"
+  formula="一原二完三传（1NF原子性、2NF完全依赖、3NF消除传递依赖）"
+  importance={4}
+  category="key-point"
+/>
+
+| 范式 | 要求 |
+|------|------|
+| **第一范式(1NF)** | 属性不可分割（原子性） |
+| **第二范式(2NF)** | 满足1NF，且非主属性完全依赖主键 |
+| **第三范式(3NF)** | 满足2NF，且消除传递依赖 |
+| **BC范式(BCNF)** | 更严格的3NF |
+
+#### 4. 事务特性（ACID）
+
+<MemoryCard 
+  title="ACID特性"
+  formula="原一隔持（原子性、一致性、隔离性、持久性）"
+  importance={5}
+  category="formula"
+/>
+
+| 特性 | 说明 |
+|------|------|
+| **原子性(Atomicity)** | 事务中的操作要么全做，要么全不做 |
+| **一致性(Consistency)** | 事务执行后，数据库保持一致性状态 |
+| **隔离性(Isolation)** | 并发事务之间相互隔离 |
+| **持久性(Durability)** | 事务一旦提交，结果永久保存 |
+
+---
+
+## 4.2 数据仓库
+
+### 一、核心讲解
+
+#### 1. 数据仓库vs数据库
+
+| 特性 | 数据库 | 数据仓库 |
+|------|--------|----------|
+| **用途** | 日常业务处理(OLTP) | 决策支持(OLAP) |
+| **数据量** | 小到中等 | 海量 |
+| **操作** | 增删改查 | 主要查询分析 |
+| **数据时效性** | 当前数据 | 历史+当前数据 |
+
+#### 2. 数据仓库特点
+
+<Card title="数据仓库四特性" icon="information">
+- **面向主题**：按主题组织数据
+- **集成性**：来自不同数据源的集成
+- **相对稳定**：主要进行查询操作
+- **随时间变化**：保存历史数据
+</Card>
+
+---
+
+## 4.3 大数据技术
+
+### 一、核心讲解
+
+#### 1. 大数据5V特征
+
+<MemoryCard 
+  title="大数据5V"
+  formula="Volume(体积)、Velocity(速度)、Variety(多样)、Value(价值)、Veracity(真实)"
+  importance={4}
+  category="key-point"
+/>
+
+#### 2. 主流大数据技术
+
+| 技术 | 用途 |
+|------|------|
+| **Hadoop** | 分布式计算框架 |
+| **HDFS** | 分布式文件存储系统 |
+| **MapReduce** | 分布式计算模型 |
+| **Spark** | 快速通用的大数据计算引擎 |
+| **HBase** | 分布式列式数据库 |
+
+---
+
+## 课堂测验
+
+<ExerciseBox
+  question="数据库的三级模式不包括（ ）"
+  options={[
+    'A. 外模式',
+    'B. 模式',
+    'C. 中模式',
+    'D. 内模式'
+  ]}
+  answer="C"
+  explanation="数据库三级模式包括：外模式（用户视图）、模式（逻辑模式）、内模式（存储模式）。"
+/>
+
+<ExerciseBox
+  question="事务的ACID特性中，表示事务要么全做要么全不做的是（ ）"
+  options={[
+    'A. 原子性',
+    'B. 一致性',
+    'C. 隔离性',
+    'D. 持久性'
+  ]}
+  answer="A"
+  explanation="原子性(Atomicity)表示事务中的操作要么全做，要么全不做，是不可分割的工作单位。"
+/>
+
+<ExerciseBox
+  question="关系数据库的第一范式(1NF)要求（ ）"
+  options={[
+    'A. 消除传递依赖',
+    'B. 完全依赖主键',
+    'C. 属性不可分割',
+    'D. 主键唯一'
+  ]}
+  answer="C"
+  explanation="第一范式(1NF)要求属性不可分割，即每个属性都是原子的。"
+/>
+
+<ExerciseBox
+  question="数据仓库与数据库的主要区别是（ ）"
+  options={[
+    'A. 数据仓库主要用于日常业务处理',
+    'B. 数据仓库主要用于决策支持',
+    'C. 数据仓库不存储历史数据',
+    'D. 数据仓库数据量小'
+  ]}
+  answer="B"
+  explanation="数据仓库主要用于决策支持(OLAP)，数据库主要用于日常业务处理(OLTP)。"
+/>
+
+<ExerciseBox
+  question="大数据的5V特征不包括（ ）"
+  options={[
+    'A. Volume（体积）',
+    'B. Velocity（速度）',
+    'C. Validity（有效性）',
+    'D. Value（价值）'
+  ]}
+  answer="C"
+  explanation="大数据5V特征包括：Volume(体积)、Velocity(速度)、Variety(多样)、Value(价值)、Veracity(真实)。"
+/>
+
+## 重点总结
+
+### 本章必记考点 ⭐⭐⭐⭐
+
+1. **数据库三级模式**：外模式(用户视图)、模式(逻辑结构)、内模式(物理存储)
+2. **ACID特性**：原子性、一致性、隔离性、持久性
+3. **范式**：1NF原子性、2NF完全依赖、3NF消除传递依赖
+4. **数据仓库vs数据库**：OLAP决策支持 vs OLTP业务处理
+5. **大数据5V**：Volume、Velocity、Variety、Value、Veracity

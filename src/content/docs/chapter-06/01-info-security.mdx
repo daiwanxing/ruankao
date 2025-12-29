@@ -1,0 +1,241 @@
+---
+title: 第6章 信息安全
+description: 掌握信息安全基本概念、安全威胁、安全技术和安全管理体系
+sidebar:
+  order: 1
+  badge:
+    text: 重点
+    variant: danger
+---
+
+import MemoryCard from '../../../components/MemoryCard.astro';
+import ExerciseBox from '../../../components/ExerciseBox.astro';
+import { Card } from '@astrojs/starlight/components';
+
+## 6.1 信息安全基本概念
+
+### 一、教学目标
+
+掌握信息安全的五大特性、威胁类型、安全技术和安全管理体系。
+
+### 二、核心讲解
+
+#### 1. 信息安全五大特性
+
+<MemoryCard 
+  title="信息安全CIA+I+N"
+  formula="机密性、完整性、可用性、可控性、不可否认性"
+  importance={5}
+  category="formula"
+/>
+
+| 特性 | 说明 |
+|------|------|
+| **机密性(Confidentiality)** | 确保信息不被未授权访问 |
+| **完整性(Integrity)** | 确保信息不被非法篡改 |
+| **可用性(Availability)** | 确保授权用户能正常访问 |
+| **可控性(Controllability)** | 对信息传播和内容进行控制 |
+| **不可否认性(Non-repudiation)** | 防止行为者否认已完成的操作 |
+
+---
+
+## 6.2 信息安全威胁
+
+### 一、核心讲解
+
+#### 1. 威胁类型
+
+<Card title="八大安全威胁" icon="warning">
+1. **物理威胁**：自然灾害、设备故障
+2. **网络攻击**：DDoS、SQL注入、XSS
+3. **恶意软件**：病毒、木马、蠕虫
+4. **社会工程**：钓鱼、欺骗
+5. **内部威胁**：员工泄密
+6. **硬件故障**：设备损坏
+7. **软件漏洞**：系统缺陷
+8. **操作失误**：人为错误
+</Card>
+
+#### 2. 常见攻击类型
+
+| 攻击类型 | 说明 |
+|----------|------|
+| **拒绝服务(DoS/DDoS)** | 使系统无法正常提供服务 |
+| **中间人攻击(MITM)** | 截获、篡改通信数据 |
+| **SQL注入** | 通过SQL语句漏洞攻击数据库 |
+| **跨站脚本(XSS)** | 在网页中注入恶意脚本 |
+| **钓鱼攻击** | 伪装成可信实体骗取信息 |
+
+---
+
+## 6.3 信息安全技术
+
+### 一、核心讲解
+
+#### 1. 加密技术
+
+<MemoryCard 
+  title="对称加密vs非对称加密"
+  formula="对称：一把钥匙，速度快（DES、AES）；非对称：公私钥对，安全性高（RSA）"
+  importance={5}
+  category="key-point"
+/>
+
+| 加密方式 | 特点 | 典型算法 |
+|----------|------|----------|
+| **对称加密** | 加解密使用同一密钥，速度快 | DES、3DES、AES |
+| **非对称加密** | 公钥加密私钥解密，安全性高 | RSA、ECC |
+| **哈希算法** | 单向加密，用于完整性校验 | MD5、SHA |
+
+#### 2. 防火墙技术
+
+<Card title="防火墙类型" icon="information">
+- **包过滤防火墙**：基于IP和端口过滤
+- **应用层网关**：基于应用层协议过滤
+- **状态检测防火墙**：跟踪连接状态
+- **下一代防火墙(NGFW)**：集成IPS、应用识别等
+</Card>
+
+#### 3. 入侵检测系统(IDS)
+
+| 类型 | 说明 |
+|------|------|
+| **NIDS** | 网络入侵检测系统 |
+| **HIDS** | 主机入侵检测系统 |
+
+#### 4. 其他安全技术
+
+| 技术 | 功能 |
+|------|------|
+| **VPN** | 虚拟专用网络，加密传输 |
+| **数字证书** | 身份认证 |
+| **数字签名** | 确保完整性和不可否认性 |
+| **访问控制** | 限制资源访问权限 |
+
+---
+
+## 6.4 信息安全管理
+
+### 一、核心讲解
+
+#### 1. PDR模型
+
+<MemoryCard 
+  title="PDR安全模型"
+  formula="Protection（防护）→ Detection（检测）→ Response（响应）"
+  importance={4}
+  category="formula"
+/>
+
+#### 2. P2DR模型
+
+在PDR基础上增加Policy（安全策略）：
+**Policy → Protection → Detection → Response**
+
+#### 3. ISO 27001信息安全管理体系
+
+<Card title="ISMS核心要素" icon="information">
+- **建立ISMS**：定义范围、制定策略
+- **实施ISMS**：风险评估、控制措施
+- **监控ISMS**：监控运行、内部审核
+- **持续改进**：管理评审、纠正预防
+</Card>
+
+---
+
+## 6.5 等级保护
+
+### 一、核心讲解
+
+#### 1. 等级保护五级
+
+| 等级 | 说明 | 适用对象 |
+|------|------|----------|
+| **第一级** | 自主保护级 | 一般信息系统 |
+| **第二级** | 指导保护级 | 省级系统 |
+| **第三级** | 监督保护级 | 市级及重要系统 |
+| **第四级** | 强制保护级 | 国家级重要系统 |
+| **第五级** | 专控保护级 | 国家安全核心系统 |
+
+<MemoryCard 
+  title="等保工作流程"
+  formula="定级→备案→测评→整改→验收"
+  importance={4}
+  category="key-point"
+/>
+
+---
+
+## 课堂测验
+
+<ExerciseBox
+  question="信息安全的五大特性不包括（ ）"
+  options={[
+    'A. 机密性',
+    'B. 完整性',
+    'C. 可扩展性',
+    'D. 可用性'
+  ]}
+  answer="C"
+  explanation="信息安全五大特性包括：机密性、完整性、可用性、可控性、不可否认性。可扩展性不属于安全特性。"
+/>
+
+<ExerciseBox
+  question="对称加密算法的特点是（ ）"
+  options={[
+    'A. 加解密使用不同密钥',
+    'B. 加解密使用同一密钥',
+    'C. 只能加密不能解密',
+    'D. 安全性高于非对称加密'
+  ]}
+  answer="B"
+  explanation="对称加密算法加密和解密使用同一密钥，速度快但密钥分发困难。"
+/>
+
+<ExerciseBox
+  question="以下属于非对称加密算法的是（ ）"
+  options={[
+    'A. DES',
+    'B. AES',
+    'C. RSA',
+    'D. MD5'
+  ]}
+  answer="C"
+  explanation="RSA是非对称加密算法；DES和AES是对称加密算法；MD5是哈希算法。"
+/>
+
+<ExerciseBox
+  question="PDR安全模型不包括（ ）"
+  options={[
+    'A. Protection（防护）',
+    'B. Detection（检测）',
+    'C. Prevention（预防）',
+    'D. Response（响应）'
+  ]}
+  answer="C"
+  explanation="PDR模型包括：Protection（防护）、Detection（检测）、Response（响应）。"
+/>
+
+<ExerciseBox
+  question="信息系统等级保护第三级是（ ）"
+  options={[
+    'A. 自主保护级',
+    'B. 指导保护级',
+    'C. 监督保护级',
+    'D. 强制保护级'
+  ]}
+  answer="C"
+  explanation="第三级是监督保护级，适用于市级及重要系统，受到国家监管机构的监督。"
+/>
+
+## 重点总结
+
+### 本章必记考点 ⭐⭐⭐⭐⭐
+
+1. **安全五特性**：机密性、完整性、可用性、可控性、不可否认性
+2. **加密技术**：对称加密(DES/AES)、非对称加密(RSA)、哈希(MD5/SHA)
+3. **PDR模型**：Protection → Detection → Response
+4. **P2DR模型**：Policy → Protection → Detection → Response
+5. **等保五级**：自主→指导→监督→强制→专控
+6. **等保流程**：定级→备案→测评→整改→验收
+7. **常见攻击**：DoS/DDoS、SQL注入、XSS、中间人攻击、钓鱼
