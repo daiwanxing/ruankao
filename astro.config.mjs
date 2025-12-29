@@ -40,10 +40,10 @@ export default defineConfig({
 			// 自定义 CSS
 			customCss: ['./src/styles/custom.css'],
 			
-			// 本地化配置
-			defaultLocale: 'zh-CN',
+			// 默认语言
+			defaultLocale: 'root',
 			locales: {
-				'zh-CN': {
+				root: {
 					label: '简体中文',
 					lang: 'zh-CN',
 				},
