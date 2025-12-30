@@ -1,29 +1,116 @@
 ---
 interface Props {
+  questionId: string;
   question: string;
   options: string[];
   answer: string;
   explanation?: string;
 }
 
-const { question, options, answer, explanation } = Astro.props;
+const { questionId, question, options, answer, explanation } = Astro.props;
+
+// 生成缓存 key
+const storageKey = `exercise_${questionId}`;
 ---
 
-<div class="exercise-box">
+<div class="exercise-box" data-question-id={questionId} data-correct-answer={answer} data-storage-key={storageKey}>
   <h4 class="question">{question}</h4>
   <ul class="options">
-    {options.map((opt) => (
-      <li>{opt}</li>
-    ))}
+    {options.map((opt, index) => {
+      const optionLetter = String.fromCharCode(65 + index);
+      return (
+        <li class="option-item" data-option={optionLetter}>
+          <span class="option-indicator">{optionLetter}</span>
+          <span class="option-text">{opt}</span>
+        </li>
+      );
+    })}
   </ul>
-  <details class="answer-section">
-    <summary>💡 查看答案</summary>
-    <div class="answer-content">
-      <p><strong>✅ 答案：</strong>{answer}</p>
+  <div class="result-section" style="display: none;">
+    <div class="result-header"></div>
+    <div class="explanation-content" style="display: none;">
       {explanation && <p><strong>📖 解析：</strong>{explanation}</p>}
     </div>
-  </details>
+  </div>
 </div>
+
+<script>
+  // 获取所有练习框
+  const exerciseBoxes = document.querySelectorAll('.exercise-box');
+
+  exerciseBoxes.forEach(box => {
+    const questionId = box.dataset.questionId;
+    const correctAnswer = box.dataset.correctAnswer;
+    const storageKey = box.dataset.storageKey;
+    const options = box.querySelectorAll('.option-item');
+    const resultSection = box.querySelector('.result-section') as HTMLElement;
+    const resultHeader = box.querySelector('.result-header') as HTMLElement;
+    const explanationContent = box.querySelector('.explanation-content') as HTMLElement;
+
+    // 从 sessionStorage 恢复答案
+    const savedAnswer = sessionStorage.getItem(storageKey || '');
+
+    if (savedAnswer) {
+      // 显示已保存的答案结果
+      showResult(savedAnswer, false);
+    }
+
+    // 为每个选项添加点击事件
+    options.forEach(option => {
+      option.addEventListener('click', () => {
+        const selectedOption = option.dataset.option;
+        if (!selectedOption) return;
+
+        // 保存到 sessionStorage
+        sessionStorage.setItem(storageKey || '', selectedOption);
+
+        // 显示结果
+        showResult(selectedOption, true);
+      });
+    });
+
+    function showResult(selectedOption: string, animate: boolean) {
+      const isCorrect = selectedOption === correctAnswer;
+
+      // 更新选项样式
+      options.forEach(opt => {
+        const optLetter = opt.dataset.option;
+        opt.classList.remove('selected', 'correct', 'incorrect');
+
+        if (optLetter === selectedOption) {
+          opt.classList.add('selected');
+          if (isCorrect) {
+            opt.classList.add('correct');
+          } else {
+            opt.classList.add('incorrect');
+          }
+        } else if (optLetter === correctAnswer && !isCorrect) {
+          // 显示正确答案
+          opt.classList.add('correct');
+        }
+      });
+
+      // 显示结果区域
+      resultSection.style.display = 'block';
+
+      if (isCorrect) {
+        resultHeader.innerHTML = '<span class="result-icon">✅</span> <span class="result-text">回答正确！</span>';
+        resultHeader.className = 'result-header correct';
+      } else {
+        resultHeader.innerHTML = `<span class="result-icon">❌</span> <span class="result-text">回答错误。正确答案是 ${correctAnswer}</span>`;
+        resultHeader.className = 'result-header incorrect';
+      }
+
+      // 显示解析
+      explanationContent.style.display = 'block';
+
+      // 滚动到结果区域
+      if (animate) {
+        resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+  });
+</script>
 
 <style>
   .exercise-box {
@@ -34,25 +121,27 @@ const { question, options, answer, explanation } = Astro.props;
     background: var(--sl-color-bg);
     transition: all 0.3s ease;
   }
-  
+
   .exercise-box:hover {
     border-color: var(--sl-color-accent);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
-  
+
   .question {
     margin-top: 0;
     margin-bottom: 1rem;
     color: var(--sl-color-white);
     font-size: 1.1rem;
   }
-  
+
   .options {
     list-style: none;
     padding-left: 0;
   }
-  
-  .options li {
+
+  .option-item {
+    display: flex;
+    align-items: flex-start;
     padding: 0.75rem 1rem;
     margin: 0.5rem 0;
     background: var(--sl-color-gray-6);
@@ -61,74 +150,139 @@ const { question, options, answer, explanation } = Astro.props;
     transition: all 0.2s ease;
     cursor: pointer;
   }
-  
-  .options li:hover {
+
+  .option-item:hover {
     background: var(--sl-color-gray-5);
     border-left-color: var(--sl-color-accent);
     transform: translateX(4px);
   }
-  
-  .answer-section {
-    margin-top: 1.5rem;
-    padding: 1.25rem;
+
+  .option-item.selected {
+    border-left-color: var(--sl-color-accent);
+  }
+
+  .option-item.correct {
     background: #dcfce7;
-    border-radius: 8px;
-    border: 2px solid #22c55e;
+    border-left-color: #22c55e;
   }
-  
-  .answer-section summary {
-    cursor: pointer;
+
+  .option-item.incorrect {
+    background: #fee2e2;
+    border-left-color: #ef4444;
+  }
+
+  .option-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--sl-color-gray-5);
+    color: var(--sl-color-white);
     font-weight: 600;
+    font-size: 0.85rem;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .option-item.correct .option-indicator {
+    background: #22c55e;
+  }
+
+  .option-item.incorrect .option-indicator {
+    background: #ef4444;
+  }
+
+  .option-text {
+    flex: 1;
+    line-height: 1.6;
+  }
+
+  .result-section {
+    margin-top: 1.25rem;
+    padding: 1rem;
+    border-radius: 8px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-header.correct {
+    background: #dcfce7;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
     color: #15803d;
-    user-select: none;
-    list-style: none;
+    font-weight: 600;
   }
-  
-  .answer-section summary::-webkit-details-marker {
-    display: none;
+
+  .result-header.incorrect {
+    background: #fee2e2;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    color: #b91c1c;
+    font-weight: 600;
   }
-  
-  .answer-section[open] summary {
-    margin-bottom: 1rem;
-    border-bottom: 1px solid #86efac;
-    padding-bottom: 0.75rem;
+
+  .result-icon {
+    margin-right: 0.5rem;
   }
-  
-  .answer-content {
-    padding-top: 0.5rem;
+
+  .explanation-content {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    border-left: 3px solid var(--sl-color-accent);
+    animation: slideDown 0.3s ease;
   }
-  
-  .answer-content p {
-    margin: 0.75rem 0;
+
+  @keyframes slideDown {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .explanation-content p {
+    margin: 0;
     line-height: 1.8;
-    color: #14532d;
-    font-size: 1rem;
+    color: var(--sl-color-gray-2);
+    font-size: 0.95rem;
   }
-  
-  .answer-content strong {
-    color: #166534;
-    font-weight: 700;
+
+  .explanation-content strong {
+    color: var(--sl-color-accent);
+    font-weight: 600;
   }
 
   /* 暗黑模式 */
-  :global([data-theme='dark']) .answer-section {
+  :global([data-theme='dark']) .option-item.correct {
     background: #14532d;
-    border-color: #22c55e;
+    border-left-color: #22c55e;
   }
-  
-  :global([data-theme='dark']) .answer-section summary {
+
+  :global([data-theme='dark']) .option-item.incorrect {
+    background: #7f1d1d;
+    border-left-color: #ef4444;
+  }
+
+  :global([data-theme='dark']) .result-header.correct {
+    background: #14532d;
     color: #86efac;
   }
-  
-  :global([data-theme='dark']) .answer-section[open] summary {
-    border-bottom-color: #166534;
+
+  :global([data-theme='dark']) .result-header.incorrect {
+    background: #7f1d1d;
+    color: #fecaca;
   }
-  
-  :global([data-theme='dark']) .answer-content p {
-    color: #dcfce7;
+
+  :global([data-theme='dark']) .explanation-content {
+    background: rgba(0, 0, 0, 0.3);
   }
-  
-  :global([data-theme='dark']) .answer-content strong {
-    color: #4ade80;
+
+  :global([data-theme='dark']) .explanation-content p {
+    color: var(--sl-color-gray-2);
   }
 </style>

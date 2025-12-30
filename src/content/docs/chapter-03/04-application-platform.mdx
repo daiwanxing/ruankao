@@ -1,0 +1,120 @@
+---
+title: 3.4 网络和应用服务平台
+description: 掌握常见的互联网服务类型及其功能
+sidebar:
+  order: 4
+  badge:
+    text: 重点
+    variant: tip
+---
+
+import MemoryCard from '../../../components/MemoryCard.astro';
+import ExerciseBox from '../../../components/ExerciseBox.astro';
+import { Card } from '@astrojs/starlight/components';
+
+## 一、教学目标
+
+掌握常见的互联网服务类型及其功能。
+
+## 二、核心讲解
+
+### 常见的互联网服务
+
+**定义**：负责服务于整个网络业务应用正常运行的各类通用的业务逻辑的实现
+
+**主要服务类型**：
+
+| 服务类型 | 英文缩写 | 功能说明 |
+|----------|----------|----------|
+| **电子邮件服务** | E-mail | 收发电子邮件，支持文本、图片、附件等 |
+| **万维网服务** | WWW | 通过浏览器访问互联网资源，使用HTTP协议 |
+| **域名解析服务** | DNS | 将域名转换为IP地址，实现人易记的域名到机器IP地址的转换 |
+| **文件传输服务** | FTP | 在网络上进行文件的上传和下载 |
+| **远程登录服务** | Telnet | 远程登录到其他计算机进行操作 |
+| **即时通讯服务** | - | 实时文字、语音、视频交流 |
+| **流媒体服务** | - | 音视频在线播放，如VOD |
+| **语音会议服务** | - | 多人语音通话 |
+| **视频会议服务** | - | 多人视频通话 |
+| **人脸识别服务** | - | 人脸检测、识别、比对 |
+
+<MemoryCard
+  title="常见网络服务"
+  formula="E-mail + WWW + DNS + FTP + Telnet"
+  importance={4}
+  category="key-point"
+/>
+
+## 三、通俗例子
+
+<Card title="各种服务的例子" icon="information">
+- **E-mail**：像电子邮箱，寄信收信
+- **WWW**：像图书馆，通过浏览器查找信息
+- **DNS**：像电话簿，把人名（域名）转换成电话号码（IP地址）
+- **FTP**：像快递公司，上传下载文件
+- **Telnet**：像远程操控，控制远方设备
+</Card>
+
+## 四、知识点速记
+
+| 知识点 | 关键要点 | 记忆口诀 |
+|--------|----------|----------|
+| **常见五服务** | E-mail（邮件）、WWW（网页）、DNS（域名）、FTP（文件）、Telnet（远程登录） | 五服务 |
+| **DNS作用** | 域名转IP地址 | 解析 |
+| **WWW协议** | HTTP | HTTP |
+| **FTP功能** | 文件上传下载 | 文件 |
+
+## 五、课后作业
+
+### 思考题
+
+1. 简述DNS的作用和原理
+2. 比较FTP和WWW服务的区别
+3. 列举常见的互联网服务类型及其功能
+
+### 课堂测验
+
+<ExerciseBox
+  question="DNS的作用是（ ）"
+  options={[
+    'A. 文件传输',
+    'B. 域名解析',
+    'C. 网页浏览',
+    'D. 远程登录'
+  ]}
+  answer="B"
+  explanation="DNS的作用是将域名解析为IP地址。"
+/>
+
+<ExerciseBox
+  question="WWW服务使用的协议是（ ）"
+  options={[
+    'A. FTP',
+    'B. SMTP',
+    'C. HTTP',
+    'D. Telnet'
+  ]}
+  answer="C"
+  explanation="WWW服务使用HTTP协议。"
+/>
+
+<ExerciseBox
+  question="FTP服务的主要功能是（ ）"
+  options={[
+    'A. 电子邮件',
+    'B. 网页浏览',
+    'C. 文件上传下载',
+    'D. 远程登录'
+  ]}
+  answer="C"
+  explanation="FTP服务的主要功能是文件上传下载。"
+/>
+
+## 六、重点总结
+
+### 本节必记考点 ⭐⭐⭐⭐
+
+1. **DNS**：域名解析，将域名转换为IP地址
+2. **WWW**：万维网服务，使用HTTP协议
+3. **E-mail**：电子邮件服务
+4. **FTP**：文件传输服务
+5. **Telnet**：远程登录服务
