@@ -1,13 +1,13 @@
-# 软考监理师教学平台
+# 计算机系统监理师备考指南
 
-基于 Astro 5 + Starlight 构建的信息系统监理师在线教学平台。
+基于 Astro 5 + Starlight 构建的计算机系统监理师考试复习指南。
 
 ## 🚀 特性
 
-- 📚 **系统化教学** - 按章节系统讲解考试内容
+- 📚 **系统化复习** - 按章节系统梳理考试内容
 - 💡 **通俗易懂** - 专业概念配合通俗例子
 - 🎯 **重点突出** - 标注高频考点和重要程度
-- ✏️ **练习巩固** - 每章配套练习题和历年真题
+- ✏️ **练习巩固** - 每章配套练习题
 - 🌓 **暗黑模式** - 支持明暗主题切换
 - 🔍 **全站搜索** - 基于 Pagefind 的全文搜索
 - 📱 **响应式设计** - 完美适配移动端
@@ -81,7 +81,7 @@ supervision-teaching-site/
 │   │   └── MemoryCard.astro     # 记忆卡片组件
 │   ├── content/
 │   │   └── docs/        # 文档内容
-│   │       ├── guides/          # 学习指南
+│   │       ├── guides/          # 复习指南
 │   │       ├── chapter-01/      # 第1章
 │   │       ├── chapter-08/      # 第8章
 │   │       └── ...
@@ -111,7 +111,7 @@ supervision-teaching-site/
 ### MemoryCard - 记忆卡片组件
 
 ```mdx
-<MemoryCard 
+<MemoryCard
   title="监理工作核心内容记忆口诀"
   formula="三控两管一协调：质进投合信调"
   importance={5}
@@ -158,64 +158,3 @@ sidebar:
 ## 📄 License
 
 MIT
-```
-
-### 启动开发服务器
-
-```bash
-npm run dev
-```
-
-访问 http://localhost:4321 查看网站
-
-### 构建生产版本
-
-```bash
-npm run build
-```
-
-### 预览生产版本
-
-```bash
-npm run preview
-```
-
-## 📁 项目结构
-
-Inside of your Astro + Starlight project, you'll see the following folders and files:
-
-```
-.
-├── public/
-├── src/
-│   ├── assets/
-│   ├── content/
-│   │   └── docs/
-│   └── content.config.ts
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
-```
-
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
-
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
-
-Static assets, like favicons, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).

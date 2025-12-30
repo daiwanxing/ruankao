@@ -6,9 +6,9 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
 	integrations: [
 		starlight({
-			title: '软考监理师教学平台',
-			description: '系统化的信息系统监理师备考指南',
-			
+			title: '计算机系统监理师备考指南',
+			description: '系统化的计算机系统监理师考试复习指南',
+
 			// 社交链接
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/daiwanxing/supervision-teaching-site' }

@@ -52,34 +52,41 @@ const storageKey = `exercise_${questionId}`;
     const savedAnswer = sessionStorage.getItem(storageKey || '');
 
     if (savedAnswer) {
-      // 显示已保存的答案结果
-      showResult(savedAnswer, false);
+      // 已答题过，锁定界面
+      lockExercise(savedAnswer);
     }
 
     // 为每个选项添加点击事件
     options.forEach(option => {
       const optElement = option as HTMLLIElement;
       optElement.addEventListener('click', () => {
+        // 如果已答题，忽略点击
+        if (sessionStorage.getItem(storageKey || '')) {
+          return;
+        }
+
         const selectedOption = optElement.dataset.option;
         if (!selectedOption) return;
 
-        // 保存到 sessionStorage
+        // 保存到 sessionStorage（一旦保存就无法更改）
         sessionStorage.setItem(storageKey || '', selectedOption);
 
-        // 显示结果
-        showResult(selectedOption, true);
+        // 锁定界面
+        lockExercise(selectedOption);
       });
     });
 
-    function showResult(selectedOption: string, animate: boolean) {
+    function lockExercise(selectedOption: string) {
       const isCorrect = selectedOption === correctAnswer;
 
-      // 更新选项样式
+      // 禁用所有选项的点击
       options.forEach(opt => {
         const optElement = opt as HTMLLIElement;
         const optLetter = optElement.dataset.option;
-        opt.classList.remove('selected', 'correct', 'incorrect');
+        optElement.style.cursor = 'not-allowed';
+        optElement.style.opacity = '0.7';
 
+        // 显示已选答案的样式
         if (optLetter === selectedOption) {
           opt.classList.add('selected');
           if (isCorrect) {
@@ -91,6 +98,11 @@ const storageKey = `exercise_${questionId}`;
           // 显示正确答案
           opt.classList.add('correct');
         }
+      });
+
+      // 移除选项的 hover 效果
+      options.forEach(opt => {
+        opt.removeEventListener('click', () => {});
       });
 
       // 显示结果区域
@@ -106,11 +118,10 @@ const storageKey = `exercise_${questionId}`;
 
       // 显示解析
       explanationContent.style.display = 'block';
+    }
 
-      // 滚动到结果区域
-      if (animate) {
-        resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
+    function showResult(selectedOption: string, animate: boolean) {
+      // 此函数已不再使用，保留兼容性
     }
   });
 </script>
@@ -160,17 +171,30 @@ const storageKey = `exercise_${questionId}`;
     transform: translateX(4px);
   }
 
+  /* 已答题后锁定状态 */
+  .option-item:has(~ .option-item.selected) {
+    cursor: not-allowed;
+  }
+
+  /* 锁定状态下禁止 hover 效果 */
+  .exercise-box:has(.option-item.selected) .option-item:hover {
+    background: var(--sl-color-gray-6);
+    border-left-color: var(--sl-color-gray-4);
+    transform: none;
+    cursor: not-allowed;
+  }
+
   .option-item.selected {
     border-left-color: var(--sl-color-accent);
   }
 
   .option-item.correct {
-    background: #dcfce7;
+    background: #bbf7d0;
     border-left-color: #22c55e;
   }
 
   .option-item.incorrect {
-    background: #fee2e2;
+    background: #fecaca;
     border-left-color: #ef4444;
   }
 
@@ -215,18 +239,18 @@ const storageKey = `exercise_${questionId}`;
   }
 
   .result-header.correct {
-    background: #dcfce7;
+    background: #bbf7d0;
     padding: 0.75rem 1rem;
     border-radius: 8px;
-    color: #15803d;
+    color: #166534;
     font-weight: 600;
   }
 
   .result-header.incorrect {
-    background: #fee2e2;
+    background: #fecaca;
     padding: 0.75rem 1rem;
     border-radius: 8px;
-    color: #b91c1c;
+    color: #991b1b;
     font-weight: 600;
   }
 
@@ -260,20 +284,20 @@ const storageKey = `exercise_${questionId}`;
     font-weight: 600;
   }
 
-  /* 暗黑模式 */
+  /* 暗黑模式 - 使用更亮的颜色 */
   :global([data-theme='dark']) .option-item.correct {
-    background: #14532d;
-    border-left-color: #22c55e;
+    background: #166534;
+    border-left-color: #4ade80;
   }
 
   :global([data-theme='dark']) .option-item.incorrect {
     background: #7f1d1d;
-    border-left-color: #ef4444;
+    border-left-color: #f87171;
   }
 
   :global([data-theme='dark']) .result-header.correct {
-    background: #14532d;
-    color: #86efac;
+    background: #166534;
+    color: #bbf7d0;
   }
 
   :global([data-theme='dark']) .result-header.incorrect {
