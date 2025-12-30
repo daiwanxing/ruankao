@@ -79,12 +79,13 @@ const storageKey = `exercise_${questionId}`;
     function lockExercise(selectedOption: string) {
       const isCorrect = selectedOption === correctAnswer;
 
+      // 添加锁定类
+      element.classList.add('is-locked');
+
       // 禁用所有选项的点击
       options.forEach(opt => {
         const optElement = opt as HTMLLIElement;
         const optLetter = optElement.dataset.option;
-        optElement.style.cursor = 'not-allowed';
-        optElement.style.opacity = '0.7';
 
         // 显示已选答案的样式
         if (optLetter === selectedOption) {
@@ -98,11 +99,6 @@ const storageKey = `exercise_${questionId}`;
           // 显示正确答案
           opt.classList.add('correct');
         }
-      });
-
-      // 移除选项的 hover 效果
-      options.forEach(opt => {
-        opt.removeEventListener('click', () => {});
       });
 
       // 显示结果区域
@@ -171,30 +167,28 @@ const storageKey = `exercise_${questionId}`;
     transform: translateX(4px);
   }
 
-  /* 已答题后锁定状态 */
-  .option-item:has(~ .option-item.selected) {
+  /* 已答题后锁定状态 - 禁用所有选项的交互 */
+  .exercise-box.is-locked .option-item {
     cursor: not-allowed;
+    pointer-events: none;
   }
 
-  /* 锁定状态下禁止 hover 效果 */
-  .exercise-box:has(.option-item.selected) .option-item:hover {
+  /* 锁定状态下不应用 hover 效果 */
+  .exercise-box.is-locked .option-item:hover {
     background: var(--sl-color-gray-6);
     border-left-color: var(--sl-color-gray-4);
     transform: none;
-    cursor: not-allowed;
   }
 
-  .option-item.selected {
-    border-left-color: var(--sl-color-accent);
-  }
-
+  /* 正确选项样式 - 柔和的绿色系 */
   .option-item.correct {
-    background: #bbf7d0;
+    background: rgba(34, 197, 94, 0.15);
     border-left-color: #22c55e;
   }
 
+  /* 错误选项样式 - 柔和的红色系 */
   .option-item.incorrect {
-    background: #fecaca;
+    background: rgba(239, 68, 68, 0.15);
     border-left-color: #ef4444;
   }
 
@@ -214,11 +208,13 @@ const storageKey = `exercise_${questionId}`;
   }
 
   .option-item.correct .option-indicator {
-    background: #22c55e;
+    background: rgba(34, 197, 94, 0.2);
+    color: #16a34a;
   }
 
   .option-item.incorrect .option-indicator {
-    background: #ef4444;
+    background: rgba(239, 68, 68, 0.2);
+    color: #dc2626;
   }
 
   .option-text {
@@ -239,18 +235,18 @@ const storageKey = `exercise_${questionId}`;
   }
 
   .result-header.correct {
-    background: #bbf7d0;
+    background: rgba(34, 197, 94, 0.1);
     padding: 0.75rem 1rem;
     border-radius: 8px;
-    color: #166534;
+    color: #16a34a;
     font-weight: 600;
   }
 
   .result-header.incorrect {
-    background: #fecaca;
+    background: rgba(239, 68, 68, 0.1);
     padding: 0.75rem 1rem;
     border-radius: 8px;
-    color: #991b1b;
+    color: #dc2626;
     font-weight: 600;
   }
 
@@ -284,29 +280,39 @@ const storageKey = `exercise_${questionId}`;
     font-weight: 600;
   }
 
-  /* 暗黑模式 - 使用更亮的颜色 */
+  /* 暗黑模式 - 柔和的色系 */
   :global([data-theme='dark']) .option-item.correct {
-    background: #166534;
+    background: rgba(34, 197, 94, 0.2);
     border-left-color: #4ade80;
   }
 
   :global([data-theme='dark']) .option-item.incorrect {
-    background: #7f1d1d;
+    background: rgba(239, 68, 68, 0.2);
     border-left-color: #f87171;
   }
 
+  :global([data-theme='dark']) .option-item.correct .option-indicator {
+    background: rgba(34, 197, 94, 0.3);
+    color: #4ade80;
+  }
+
+  :global([data-theme='dark']) .option-item.incorrect .option-indicator {
+    background: rgba(239, 68, 68, 0.3);
+    color: #f87171;
+  }
+
   :global([data-theme='dark']) .result-header.correct {
-    background: #166534;
-    color: #bbf7d0;
+    background: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
   }
 
   :global([data-theme='dark']) .result-header.incorrect {
-    background: #7f1d1d;
-    color: #fecaca;
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
   }
 
   :global([data-theme='dark']) .explanation-content {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.08);
   }
 
   :global([data-theme='dark']) .explanation-content p {
