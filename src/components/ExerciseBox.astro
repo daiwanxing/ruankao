@@ -39,13 +39,14 @@ const storageKey = `exercise_${questionId}`;
   const exerciseBoxes = document.querySelectorAll('.exercise-box');
 
   exerciseBoxes.forEach(box => {
-    const questionId = box.dataset.questionId;
-    const correctAnswer = box.dataset.correctAnswer;
-    const storageKey = box.dataset.storageKey;
-    const options = box.querySelectorAll('.option-item');
-    const resultSection = box.querySelector('.result-section') as HTMLElement;
-    const resultHeader = box.querySelector('.result-header') as HTMLElement;
-    const explanationContent = box.querySelector('.explanation-content') as HTMLElement;
+    const element = box as HTMLElement;
+    const questionId = element.dataset.questionId;
+    const correctAnswer = element.dataset.correctAnswer;
+    const storageKey = element.dataset.storageKey;
+    const options = element.querySelectorAll('.option-item');
+    const resultSection = element.querySelector('.result-section') as HTMLElement;
+    const resultHeader = element.querySelector('.result-header') as HTMLElement;
+    const explanationContent = element.querySelector('.explanation-content') as HTMLElement;
 
     // 从 sessionStorage 恢复答案
     const savedAnswer = sessionStorage.getItem(storageKey || '');
@@ -57,8 +58,9 @@ const storageKey = `exercise_${questionId}`;
 
     // 为每个选项添加点击事件
     options.forEach(option => {
-      option.addEventListener('click', () => {
-        const selectedOption = option.dataset.option;
+      const optElement = option as HTMLLIElement;
+      optElement.addEventListener('click', () => {
+        const selectedOption = optElement.dataset.option;
         if (!selectedOption) return;
 
         // 保存到 sessionStorage
@@ -74,7 +76,8 @@ const storageKey = `exercise_${questionId}`;
 
       // 更新选项样式
       options.forEach(opt => {
-        const optLetter = opt.dataset.option;
+        const optElement = opt as HTMLLIElement;
+        const optLetter = optElement.dataset.option;
         opt.classList.remove('selected', 'correct', 'incorrect');
 
         if (optLetter === selectedOption) {
