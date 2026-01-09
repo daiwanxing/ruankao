@@ -95,13 +95,6 @@ import { Card } from '@astrojs/starlight/components';
 
 ## 五、课后作业
 
-### 思考题
-
-1. 比较TCP和UDP协议的优缺点
-2. IPv4地址分为哪几类？各类适用于什么规模的网络？
-3. NAT技术的作用是什么？
-4. 简述IPv6相比IPv4的优势
-
 ### 课堂测验
 
 <ExerciseBox
@@ -150,6 +143,80 @@ import { Card } from '@astrojs/starlight/components';
   ]}
   answer="B"
   explanation="IPv6地址由128位二进制数组成。"
+/>
+
+### 高频考点补充
+
+<ExerciseBox
+  question="OSI七层模型中，负责路由选择的是（ ）"
+  options={[
+    'A. 数据链路层',
+    'B. 网络层',
+    'C. 传输层',
+    'D. 会话层'
+  ]}
+  answer="B"
+  explanation="网络层（第3层）负责路由选择，实现数据包的转发和寻址功能。IP协议就在网络层工作。"
+/>
+
+<ExerciseBox
+  question="以下关于TCP和UDP的描述，错误的是（ ）"
+  options={[
+    'A. TCP是面向连接的协议，UDP是无连接的协议',
+    'B. TCP提供可靠传输，UDP不保证可靠传输',
+    'C. TCP的传输效率高于UDP',
+    'D. HTTP使用TCP协议'
+  ]}
+  answer="C"
+  explanation="TCP由于需要建立连接、确认、重传等机制，传输效率低于UDP。UDP虽然不可靠，但由于头部开销小、无需建立连接，传输效率更高。"
+/>
+
+<ExerciseBox
+  question="IP地址190.10.20.30属于（ ）类地址"
+  options={[
+    'A. A类',
+    'B. B类',
+    'C. C类',
+    'D. D类'
+  ]}
+  answer="B"
+  explanation="B类地址首字节范围是128-191。190在128-191范围内，因此是B类地址。A类是1-126，C类是192-223。"
+/>
+
+<ExerciseBox
+  question="ARP协议的作用是（ ）"
+  options={[
+    'A. 将域名解析为IP地址',
+    'B. 将IP地址解析为MAC地址',
+    'C. 将MAC地址解析为IP地址',
+    'D. 将IP地址解析为域名'
+  ]}
+  answer="B"
+  explanation="ARP（地址解析协议）的作用是将IP地址解析为MAC地址（物理地址）。DNS是将域名解析为IP地址，RARP是反向地址解析协议。"
+/>
+
+<ExerciseBox
+  question="以下端口号中，属于TCP协议且用于HTTP服务的是（ ）"
+  options={[
+    'A. 21',
+    'B. 25',
+    'C. 80',
+    'D. 110'
+  ]}
+  answer="C"
+  explanation="80端口用于HTTP服务。21是FTP，25是SMTP，110是POP3。记住常用端口号：HTTP(80)、HTTPS(443)、FTP(21)、SMTP(25)、DNS(53)、Telnet(23)。"
+/>
+
+<ExerciseBox
+  question="某C类网络的子网掩码为255.255.255.192，则该网络被划分为（ ）个子网"
+  options={[
+    'A. 2',
+    'B. 4',
+    'C. 8',
+    'D. 16'
+  ]}
+  answer="B"
+  explanation="C类默认子网掩码是255.255.255.0，现在是255.255.255.192。192的二进制是11000000，借用了2位作为子网位。2^2=4，所以划分为4个子网。"
 />
 
 ## 六、重点总结

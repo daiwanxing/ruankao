@@ -169,14 +169,6 @@ import { Card } from '@astrojs/starlight/components';
 
 ## 五、课后作业
 
-### 思考题
-
-1. 简述身份认证的主要方式有哪些？
-2. 比较自主访问控制（DAC）和强制访问控制（MAC）的区别
-3. 简述防火墙的基本特性和作用
-4. 对称加密和非对称加密各有什么优缺点？
-5. 入侵检测系统可以分为哪两类？各有什么特点？
-
 ### 课堂测验
 
 <ExerciseBox
@@ -297,6 +289,80 @@ import { Card } from '@astrojs/starlight/components';
   ]}
   answer="D"
   explanation="数字签名主要用于解决伪造、抵赖、冒充、篡改问题，加密不是其主要目的。"
+/>
+
+### 高频考点补充
+
+<ExerciseBox
+  question="以下关于对称加密和非对称加密的描述，正确的是（ ）"
+  options={[
+    'A. 对称加密的加密速度比非对称加密慢',
+    'B. 对称加密使用公钥和私钥两个密钥',
+    'C. DES是对称加密算法，RSA是非对称加密算法',
+    'D. 非对称加密适合加密大量数据'
+  ]}
+  answer="C"
+  explanation="DES是对称加密算法（加密解密用同一密钥），RSA是非对称加密算法（使用公钥私钥对）。对称加密速度快，适合大量数据加密；非对称加密速度慢，适合加密少量数据如密钥。"
+/>
+
+<ExerciseBox
+  question="数字证书不包含以下哪项内容（ ）"
+  options={[
+    'A. 证书序列号',
+    'B. 证书持有者的公钥',
+    'C. 证书持有者的私钥',
+    'D. 证书颁发机构的签名'
+  ]}
+  answer="C"
+  explanation="数字证书包含：证书版本、序列号、签名算法、颁发机构、有效期、持有者信息、公钥等信息，但不包含私钥。私钥由证书持有者自己保密存储，绝对不能出现在证书中。"
+/>
+
+<ExerciseBox
+  question="以下关于防火墙的描述，错误的是（ ）"
+  options={[
+    'A. 包过滤防火墙工作在网络层和传输层',
+    'B. 应用层防火墙可以理解应用层协议',
+    'C. 防火墙可以防范所有类型的网络攻击',
+    'D. 防火墙不能防止内部网络的恶意攻击'
+  ]}
+  answer="C"
+  explanation="防火墙不能防范所有类型的网络攻击，如不能防范病毒、木马、内部攻击等。防火墙主要用于控制内外网之间的访问，不是万能的安全解决方案。"
+/>
+
+<ExerciseBox
+  question="VPN技术主要使用的协议是（ ）"
+  options={[
+    'A. SSL/TLS',
+    'B. IPSec',
+    'C. SSH',
+    'D. 以上都是'
+  ]}
+  answer="D"
+  explanation="VPN（虚拟专用网）可以使用多种协议实现：IPSec是网络层VPN协议，SSL/TLS是应用层VPN协议（如OpenVPN），SSH也可以建立隧道。不同的VPN场景使用不同的协议。"
+/>
+
+<ExerciseBox
+  question="以下哪种加密算法是对称加密算法（ ）"
+  options={[
+    'A. RSA',
+    'B. ECC',
+    'C. AES',
+    'D. DSA'
+  ]}
+  answer="C"
+  explanation="AES（高级加密标准）是对称加密算法。RSA、ECC、DSA都是非对称加密算法。常见的对称加密算法有：DES、3DES、AES、RC4等。"
+/>
+
+<ExerciseBox
+  question="在网络访问控制中，安全性最高但灵活性最差的是（ ）"
+  options={[
+    'A. 自主访问控制（DAC）',
+    'B. 强制访问控制（MAC）',
+    'C. 基于角色的访问控制（Role-BAC）',
+    'D. 基于规则的访问控制（Rule-BAC）'
+  ]}
+  answer="B"
+  explanation="强制访问控制（MAC）基于安全级别标签，由系统管理员强制执行，用户不能自行更改，因此安全性最高但灵活性最差。DAC灵活性最高但安全性较低。"
 />
 
 ## 六、重点总结
