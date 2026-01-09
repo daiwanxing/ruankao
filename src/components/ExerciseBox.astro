@@ -1,13 +1,18 @@
 ---
 interface Props {
-  questionId: string;
+  questionId?: string;
   question: string;
   options: string[];
   answer: string;
   explanation?: string;
 }
 
-const { questionId, question, options, answer, explanation } = Astro.props;
+const { questionId: providedQuestionId, question, options, answer, explanation } = Astro.props;
+
+// 自动生成questionId（如果未提供）
+const questionId = providedQuestionId || `q_${question.split('').reduce((acc, char) => {
+  return ((acc << 5) - acc) + char.charCodeAt(0);
+}, 0).toString(36)}`;
 
 // 生成缓存 key
 const storageKey = `exercise_${questionId}`;
