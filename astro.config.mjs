@@ -24,54 +24,68 @@ export default defineConfig({
 					],
 				},
 				{
-					label: '📖 第一篇 基础知识',
+					label: '📕 基础知识篇',
 					collapsed: false,
-					autogenerate: { directory: 'chapter-01' },
+					items: [
+						{
+							label: '第1章 信息化发展',
+							autogenerate: { directory: 'chapter-01' },
+						},
+						{
+							label: '第2章 信息系统',
+							autogenerate: { directory: 'chapter-02' },
+						},
+						{
+							label: '第3章 信息网络',
+							autogenerate: { directory: 'chapter-03' },
+						},
+						{
+							label: '第4章 信息资源',
+							autogenerate: { directory: 'chapter-04' },
+						},
+						{
+							label: '第5章 信息应用',
+							autogenerate: { directory: 'chapter-05' },
+						},
+						{
+							label: '第6章 信息安全',
+							autogenerate: { directory: 'chapter-06' },
+						},
+						{
+							label: '第7章 运行维护',
+							autogenerate: { directory: 'chapter-07' },
+						},
+					],
 				},
 				{
-					label: '📖 第二篇 信息系统',
+					label: '📕 监理知识篇',
 					collapsed: false,
-					autogenerate: { directory: 'chapter-02' },
-				},
-				{
-					label: '📖 第三篇 信息网络',
-					collapsed: false,
-					autogenerate: { directory: 'chapter-03' },
-				},
-				{
-					label: '📖 第四篇 信息资源',
-					collapsed: false,
-					autogenerate: { directory: 'chapter-04' },
-				},
-				{
-					label: '📖 第五篇 信息应用',
-					collapsed: false,
-					autogenerate: { directory: 'chapter-05' },
-				},
-				{
-					label: '📖 第六篇 信息安全',
-					collapsed: false,
-					autogenerate: { directory: 'chapter-06' },
-				},
-				{
-					label: '📖 第七篇 运行维护',
-					collapsed: false,
-					autogenerate: { directory: 'chapter-07' },
-				},
-				{
-					label: '💻 第二篇 监理知识',
-					collapsed: false,
-					autogenerate: { directory: 'chapter-08' },
-				},
-				{
-					label: '💻 第三篇 监理实务',
-					collapsed: false,
-					autogenerate: { directory: 'chapter-09' },
-				},
-				{
-					label: '💻 第四篇 监理管理',
-					collapsed: false,
-					autogenerate: { directory: 'chapter-10' },
+					items: [
+						{
+							label: '第8章 监理概论',
+							autogenerate: { directory: 'chapter-08' },
+						},
+						{
+							label: '第9章 质量控制与验收',
+							autogenerate: { directory: 'chapter-09' },
+						},
+						{
+							label: '第10章 进度与成本',
+							autogenerate: { directory: 'chapter-10' },
+						},
+						{
+							label: '第11章 合同与知识产权',
+							link: '/chapter-11/01-contract-ip/',
+						},
+						{
+							label: '第12章 信息与资料管理',
+							link: '/chapter-12/01-information-mgmt/',
+						},
+						{
+							label: '第13章 组织协调与沟通',
+							link: '/chapter-13/01-coordination-communication/',
+						},
+					],
 				},
 			],
 			
