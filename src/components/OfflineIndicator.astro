@@ -1,0 +1,69 @@
+---
+// 离线状态指示器
+---
+
+<div id="offline-indicator" class="offline-indicator" style="display: none;">
+  <span class="offline-icon">📡</span>
+  <span class="offline-text">离线模式</span>
+</div>
+
+<script>
+  function updateOnlineStatus() {
+    const indicator = document.getElementById('offline-indicator');
+    if (!indicator) return;
+
+    if (navigator.onLine) {
+      indicator.style.display = 'none';
+    } else {
+      indicator.style.display = 'flex';
+    }
+  }
+
+  window.addEventListener('online', updateOnlineStatus);
+  window.addEventListener('offline', updateOnlineStatus);
+  updateOnlineStatus();
+</script>
+
+<style>
+  .offline-indicator {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    z-index: 9998;
+    background: rgba(239, 68, 68, 0.95);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .offline-icon {
+    font-size: 1.2rem;
+  }
+
+  @media (max-width: 768px) {
+    .offline-indicator {
+      top: 10px;
+      right: 10px;
+      font-size: 0.85rem;
+      padding: 0.4rem 0.8rem;
+    }
+  }
+</style>
