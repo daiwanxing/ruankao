@@ -166,66 +166,47 @@ import { Card } from '@astrojs/starlight/components';
 
 ---
 
-## 课堂测验
+## 五、课后作业
+
+### 课堂测验（真题模拟版）
 
 <ExerciseBox
-  questionId="docs-06"  question="信息安全的五大特性不包括（ ）"
+  questionId="ch06-01-adv"
+  question="某公司财务部收到一封看似来自'CEO'的紧急邮件，要求立即向某账户转账。财务人员检查发件人地址发现是 'ceo@company-vip.com'（非公司官方域名）。这属于哪种安全攻击？（ ）"
   options={[
-    'A. 机密性',
-    'B. 完整性',
-    'C. 可扩展性',
-    'D. 可用性'
+    "A. SQL注入攻击",
+    "B. 跨站脚本攻击 (XSS)",
+    "C. 拒绝服务攻击 (DoS)",
+    "D. 社会工程学攻击（钓鱼邮件）"
   ]}
-  answer="C"
-  explanation="信息安全五大特性包括：机密性、完整性、可用性、可控性、不可否认性。可扩展性不属于安全特性。"
+  answer="D"
+  explanation="【真题考点：攻击类型辨析】\n- 社会工程学（Social Engineering）：利用人性的弱点（恐惧、贪婪、服从权威）进行欺骗。钓鱼邮件是典型的社会工程学攻击。\n- SQL注入/XSS是针对系统的技术漏洞。\n- DoS是暴力耗尽资源。"
 />
 
 <ExerciseBox
-  questionId="docs-07"  question="对称加密算法的特点是（ ）"
+  questionId="ch06-02-adv"
+  question="在设计一个网上银行系统时，要求用户的登录密码必须在数据库中加密存储，且即使管理员也无法还原出原始密码。应采用的加密算法类型是（ ）"
   options={[
-    'A. 加解密使用不同密钥',
-    'B. 加解密使用同一密钥',
-    'C. 只能加密不能解密',
-    'D. 安全性高于非对称加密'
+    "A. 对称加密算法 (如 AES)",
+    "B. 非对称加密算法 (如 RSA)",
+    "C. 哈希摘要算法 (如 SHA-256)",
+    "D. 序列密码算法"
   ]}
-  answer="B"
-  explanation="对称加密算法加密和解密使用同一密钥，速度快但密钥分发困难。"
+  answer="C"
+  explanation="【真题考点：密码学应用】\n- 哈希算法（单向散列）：特点是不可逆。常用于密码存储（存Hash值，验证时比对Hash值），这样即使数据库泄露，黑客也无法直接获得明文密码。\n- 对称/非对称加密都是可逆的，如果密钥泄露，密码就能被解密，不符合'管理员也无法还原'的要求。"
 />
 
 <ExerciseBox
-  questionId="docs-08"  question="以下属于非对称加密算法的是（ ）"
+  questionId="ch06-03-adv"
+  question="勒索病毒（Ransomware）感染了公司服务器，导致所有文件被加密无法打开，黑客索要比特币才提供解密私钥。这种攻击主要破坏了信息的（ ）"
   options={[
-    'A. DES',
-    'B. AES',
-    'C. RSA',
-    'D. MD5'
+    "A. 机密性 (Confidentiality)",
+    "B. 完整性 (Integrity)",
+    "C. 可用性 (Availability)",
+    "D. 不可否认性 (Non-repudiation)"
   ]}
   answer="C"
-  explanation="RSA是非对称加密算法；DES和AES是对称加密算法；MD5是哈希算法。"
-/>
-
-<ExerciseBox
-  questionId="docs-09"  question="PDR安全模型不包括（ ）"
-  options={[
-    'A. Protection（防护）',
-    'B. Detection（检测）',
-    'C. Prevention（预防）',
-    'D. Response（响应）'
-  ]}
-  answer="C"
-  explanation="PDR模型包括：Protection（防护）、Detection（检测）、Response（响应）。"
-/>
-
-<ExerciseBox
-  questionId="docs-10"  question="信息系统等级保护第三级是（ ）"
-  options={[
-    'A. 自主保护级',
-    'B. 指导保护级',
-    'C. 监督保护级',
-    'D. 强制保护级'
-  ]}
-  answer="C"
-  explanation="第三级是监督保护级，适用于市级及重要系统，受到国家监管机构的监督。"
+  explanation="【真题考点：信息安全五属性】\n- 可用性：授权用户在需要时能够正常访问和使用数据。文件被加密锁死，用户无法访问，就是破坏了'可用性'。\n- 虽然数据被加密了（看似机密性），但对于合法用户来说是'不可用'的。"
 />
 
 ## 重点总结
