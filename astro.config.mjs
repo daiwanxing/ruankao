@@ -31,7 +31,7 @@ export default defineConfig({
 						window.dataLayer = window.dataLayer || [];
 						function gtag(){dataLayer.push(arguments);}
 						gtag('js', new Date());
-						gtag('config', 'G-MEASUREMENT_ID');
+						gtag('config', 'G-2EP7SV0D17');
 					`,
 				},
 				{
