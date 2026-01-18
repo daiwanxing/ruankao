@@ -5,6 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 // https://astro.build/config
 export default defineConfig({
+	site: 'https://supervision-teaching-site.vercel.app',
 	integrations: [
 		starlight({
 			title: '计算机系统监理师备考指南',
@@ -17,6 +18,22 @@ export default defineConfig({
 
 			// PWA 相关 meta 标签
 			head: [
+				{
+					tag: 'script',
+					attrs: {
+						src: 'https://www.googletagmanager.com/gtag/js?id=G-2EP7SV0D17',
+						async: true,
+					},
+				},
+				{
+					tag: 'script',
+					content: `
+						window.dataLayer = window.dataLayer || [];
+						function gtag(){dataLayer.push(arguments);}
+						gtag('js', new Date());
+						gtag('config', 'G-MEASUREMENT_ID');
+					`,
+				},
 				{
 					tag: 'link',
 					attrs: { rel: 'manifest', href: '/manifest.webmanifest' },
