@@ -1,0 +1,258 @@
+--- 
+interface Question {
+  type?: 'text' | 'select'; // 预留扩展，目前默认为简答题
+  title: string;
+  answer: string;
+  points?: number; // 分值
+}
+
+interface Props {
+  id?: string;
+  title: string;
+  scenario: string; // 案例背景描述
+  questions: Question[];
+}
+
+const { id, title, scenario, questions } = Astro.props;
+
+// 处理换行符，将 \n 转换为 <br/>
+const formatText = (text: string) => {
+  return text.replace(/\\n|\n/g, '<br />');
+};
+--- 
+
+<div class="case-study-wrapper" id={id}>
+  <div class="case-header">
+    <span class="case-icon">📋</span>
+    <h3 class="case-title">案例分析：{title}</h3>
+  </div>
+  
+  <div class="case-scenario">
+    <div class="scenario-label">案例背景</div>
+    <div class="scenario-content">
+      <p set:html={formatText(scenario)} />
+    </div>
+  </div>
+
+  <div class="case-questions">
+    {questions.map((q, index) => (
+      <div class="question-block">
+        <div class="question-header">
+          <span class="q-index">问题 {index + 1}</span>
+          {q.points && <span class="q-points">（{q.points}分）</span>}
+        </div>
+        <div class="question-text">
+          <p set:html={formatText(q.title)} />
+        </div>
+        
+        <div class="answer-section">
+          <button class="toggle-btn" aria-label="查看参考答案">
+            <span class="btn-icon">👁️</span> 查看参考答案与评分要点
+          </button>
+          <div class="answer-content" style="display: none;">
+            <div class="answer-box">
+              <div class="answer-label">✅ 参考解析</div>
+              <div class="answer-text" set:html={formatText(q.answer)} />
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<script>
+  // 为所有案例组件添加交互逻辑
+  document.querySelectorAll('.case-study-wrapper').forEach(wrapper => {
+    const toggles = wrapper.querySelectorAll('.toggle-btn');
+    
+    toggles.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const button = e.currentTarget as HTMLButtonElement;
+        const answerContent = button.nextElementSibling as HTMLElement;
+        
+        const isHidden = answerContent.style.display === 'none';
+        
+        if (isHidden) {
+          answerContent.style.display = 'block';
+          answerContent.classList.add('fade-in');
+          button.innerHTML = '<span class="btn-icon">🙈</span> 收起答案';
+          button.classList.add('active');
+        } else {
+          answerContent.style.display = 'none';
+          answerContent.classList.remove('fade-in');
+          button.innerHTML = '<span class="btn-icon">👁️</span> 查看参考答案与评分要点';
+          button.classList.remove('active');
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .case-study-wrapper {
+    background-color: var(--sl-color-bg-nav);
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 12px;
+    margin: 2rem 0;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  .case-header {
+    background: var(--sl-color-accent-low);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--sl-color-accent);
+  }
+
+  .case-icon {
+    font-size: 1.5rem;
+    margin-right: 0.75rem;
+  }
+
+  .case-title {
+    margin: 0 !important;
+    font-size: 1.2rem !important;
+    color: var(--sl-color-white) !important;
+    font-weight: 600;
+  }
+
+  /* 场景背景区 */
+  .case-scenario {
+    padding: 1.5rem;
+    background-color: var(--sl-color-bg);
+    border-bottom: 1px dashed var(--sl-color-gray-4);
+  }
+
+  .scenario-label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--sl-color-gray-3);
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+
+  .scenario-content {
+    color: var(--sl-color-gray-2);
+    line-height: 1.8;
+    font-size: 1rem;
+  }
+
+  /* 问题区 */
+  .case-questions {
+    padding: 0 1.5rem 1.5rem;
+    background-color: var(--sl-color-bg);
+  }
+
+  .question-block {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--sl-color-gray-5);
+  }
+
+  .question-block:first-child {
+    border-top: none;
+  }
+
+  .question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .q-index {
+    font-weight: 700;
+    color: var(--sl-color-accent);
+    background: var(--sl-color-accent-low);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  .q-points {
+    font-size: 0.85rem;
+    color: var(--sl-color-gray-3);
+  }
+
+  .question-text {
+    font-weight: 600;
+    color: var(--sl-color-white);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  /* 答案区 */
+  .toggle-btn {
+    background: transparent;
+    border: 1px solid var(--sl-color-accent);
+    color: var(--sl-color-accent);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .toggle-btn:hover {
+    background: var(--sl-color-accent-low);
+  }
+
+  .toggle-btn.active {
+    background: var(--sl-color-gray-5);
+    border-color: var(--sl-color-gray-4);
+    color: var(--sl-color-gray-2);
+  }
+
+  .answer-content {
+    margin-top: 1rem;
+  }
+
+  .answer-box {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: 8px;
+    padding: 1rem;
+  }
+
+  :global([data-theme='dark']) .answer-box {
+    background: rgba(34, 197, 94, 0.1);
+    border-color: rgba(34, 197, 94, 0.2);
+  }
+
+  .answer-label {
+    color: #16a34a;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  :global([data-theme='dark']) .answer-label {
+    color: #4ade80;
+  }
+
+  .answer-text {
+    color: var(--sl-color-gray-2);
+    line-height: 1.7;
+    font-size: 0.95rem;
+  }
+
+  /* 动画 */
+  .fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
