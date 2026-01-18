@@ -95,128 +95,58 @@ import { Card } from '@astrojs/starlight/components';
 
 ## 五、课后作业
 
-### 课堂测验
+### 课堂测验（真题模拟版）
 
 <ExerciseBox
-  question="TCP协议的特点是（ ）"
+  questionId="ch03-02-01-adv"
+  question="某公司网络管理员在排查网络故障时，发现一台PC无法访问互联网，但可以Ping通网关。执行 'arp -a' 命令后，发现网关IP对应的MAC地址与路由器实际MAC地址不一致。这最可能是遭受了（ ）攻击。"
   options={[
-    'A. 无连接',
-    'B. 不可靠传输',
-    'C. 面向连接',
-    'D. 速度快'
+    "A. DNS劫持",
+    "B. ARP欺骗 (ARP Spoofing)",
+    "C. SYN Flood攻击",
+    "D. IP地址冲突"
+  ]}
+  answer="B"
+  explanation="【真题考点：ARP协议安全】\n- ARP的作用是建立IP地址到MAC地址的映射。\n- 如果PC上的ARP缓存表中，网关IP对应的MAC地址被篡改成攻击者的MAC地址（或者不存在的MAC地址），数据包就会发错地方，导致断网或被窃听。这就是典型的ARP欺骗。"
+/>
+
+<ExerciseBox
+  questionId="ch03-02-02-adv"
+  question="某企业申请到了一个C类IP地址段 192.168.10.0/24。为了满足4个部门的联网需求，每个部门的主机数量约为25台。网络管理员决定进行子网划分，最节省IP地址且满足需求的子网掩码应设置为（ ）"
+  options={[
+    "A. 255.255.255.0 (/24)",
+    "B. 255.255.255.128 (/25)",
+    "C. 255.255.255.192 (/26)",
+    "D. 255.255.255.224 (/27)"
+  ]}
+  answer="D"
+  explanation="【真题考点：子网划分】\n- 需求：4个部门 -> 需要划分至少4个子网。\n- 主机数：25台 -> 每个子网可用IP >= 25。\n- 计算：\n  - A (/24)：1个子网，254主机。不满足4个部门隔离。\n  - B (/25)：2个子网，126主机。不满足4个部门。\n  - C (/26)：4个子网，每个子网主机数 = 2^(8-2) - 2 = 62 > 25。满足，但浪费较多。\n  - D (/27)：8个子网，每个子网主机数 = 2^(8-3) - 2 = 30 > 25。满足，且最节省地址（借了3位网络位，剩5位主机位）。"
+/>
+
+<ExerciseBox
+  questionId="ch03-02-03-adv"
+  question="在TCP/IP协议簇中，以下协议工作在'应用层'且基于UDP传输的是（ ）"
+  options={[
+    "A. SMTP (简单邮件传输协议)",
+    "B. Telnet (远程终端协议)",
+    "C. SNMP (简单网络管理协议)",
+    "D. FTP (文件传输协议)"
   ]}
   answer="C"
-  explanation="TCP是面向连接的可靠传输协议。"
+  explanation="【真题考点：协议层级与端口】\n- SMTP (TCP 25)\n- Telnet (TCP 23)\n- FTP (TCP 21)\n- SNMP (UDP 161/162)：网络管理协议通常需要低开销，且允许丢包重试，常基于UDP。\n- DNS (UDP 53 / TCP 53)：虽然DNS也可以用TCP，但默认查询用UDP。"
 />
 
 <ExerciseBox
-  question="IPv4地址由（ ）位二进制数组成"
+  questionId="ch03-02-04-adv"
+  question="关于IPv6，以下说法错误的是（ ）"
   options={[
-    'A. 16',
-    'B. 32',
-    'C. 64',
-    'D. 128'
+    "A. IPv6地址长度为128位",
+    "B. IPv6不再支持ARP协议，改用NDP（邻居发现协议）",
+    "C. IPv6头部固定长度为40字节，提高了路由器转发效率",
+    "D. IPv6必须依赖NAT技术才能实现内网与公网通信"
   ]}
-  answer="B"
-  explanation="IPv4地址由32位二进制数组成。"
-/>
-
-<ExerciseBox
-  question="C类地址最多支持（ ）个主机"
-  options={[
-    'A. 254',
-    'B. 65534',
-    'C. 16777214',
-    'D. 无数个'
-  ]}
-  answer="A"
-  explanation="C类地址最多支持254个主机（2^8-2）。"
-/>
-
-<ExerciseBox
-  question="IPv6地址由（ ）位二进制数组成"
-  options={[
-    'A. 64',
-    'B. 128',
-    'C. 256',
-    'D. 512'
-  ]}
-  answer="B"
-  explanation="IPv6地址由128位二进制数组成。"
-/>
-
-### 高频考点补充
-
-<ExerciseBox
-  question="OSI七层模型中，负责路由选择的是（ ）"
-  options={[
-    'A. 数据链路层',
-    'B. 网络层',
-    'C. 传输层',
-    'D. 会话层'
-  ]}
-  answer="B"
-  explanation="网络层（第3层）负责路由选择，实现数据包的转发和寻址功能。IP协议就在网络层工作。"
-/>
-
-<ExerciseBox
-  question="以下关于TCP和UDP的描述，错误的是（ ）"
-  options={[
-    'A. TCP是面向连接的协议，UDP是无连接的协议',
-    'B. TCP提供可靠传输，UDP不保证可靠传输',
-    'C. TCP的传输效率高于UDP',
-    'D. HTTP使用TCP协议'
-  ]}
-  answer="C"
-  explanation="TCP由于需要建立连接、确认、重传等机制，传输效率低于UDP。UDP虽然不可靠，但由于头部开销小、无需建立连接，传输效率更高。"
-/>
-
-<ExerciseBox
-  question="IP地址190.10.20.30属于（ ）类地址"
-  options={[
-    'A. A类',
-    'B. B类',
-    'C. C类',
-    'D. D类'
-  ]}
-  answer="B"
-  explanation="B类地址首字节范围是128-191。190在128-191范围内，因此是B类地址。A类是1-126，C类是192-223。"
-/>
-
-<ExerciseBox
-  question="ARP协议的作用是（ ）"
-  options={[
-    'A. 将域名解析为IP地址',
-    'B. 将IP地址解析为MAC地址',
-    'C. 将MAC地址解析为IP地址',
-    'D. 将IP地址解析为域名'
-  ]}
-  answer="B"
-  explanation="ARP（地址解析协议）的作用是将IP地址解析为MAC地址（物理地址）。DNS是将域名解析为IP地址，RARP是反向地址解析协议。"
-/>
-
-<ExerciseBox
-  question="以下端口号中，属于TCP协议且用于HTTP服务的是（ ）"
-  options={[
-    'A. 21',
-    'B. 25',
-    'C. 80',
-    'D. 110'
-  ]}
-  answer="C"
-  explanation="80端口用于HTTP服务。21是FTP，25是SMTP，110是POP3。记住常用端口号：HTTP(80)、HTTPS(443)、FTP(21)、SMTP(25)、DNS(53)、Telnet(23)。"
-/>
-
-<ExerciseBox
-  question="某C类网络的子网掩码为255.255.255.192，则该网络被划分为（ ）个子网"
-  options={[
-    'A. 2',
-    'B. 4',
-    'C. 8',
-    'D. 16'
-  ]}
-  answer="B"
-  explanation="C类默认子网掩码是255.255.255.0，现在是255.255.255.192。192的二进制是11000000，借用了2位作为子网位。2^2=4，所以划分为4个子网。"
+  answer="D"
+  explanation="【真题考点：IPv6特性】\n- IPv6的设计初衷就是解决IP地址枯竭问题，拥有海量地址（'给每一粒沙子分配一个IP'），因此原则上不再需要NAT（地址转换）技术来节省公网IP，可以直接端到端通信。D项说法完全相反。"
 />
 
 ## 六、重点总结

@@ -34,7 +34,7 @@ const storageKey = `exercise_${questionId}`;
   <div class="result-section" style="display: none;">
     <div class="result-header"></div>
     <div class="explanation-content" style="display: none;">
-      {explanation && <p><strong>📖 解析：</strong><span set:html={explanation.replace(/\n/g, '<br />')} /></p>}
+      {explanation && <p><strong>📖 解析：</strong><span set:html={explanation.replace(/\\n|\n/g, '<br />')} /></p>}
     </div>
   </div>
 </div>
