@@ -1,0 +1,33 @@
+---
+import type { Props } from '@astrojs/starlight/props';
+import Default from '@astrojs/starlight/components/Footer.astro';
+import Comments from './Comments.astro';
+
+// 从 Astro.url 获取当前页面路径
+const currentPath = Astro.url.pathname;
+
+// 判断是否应该显示评论
+// 排除首页和某些特殊页面
+const shouldShowComments =
+  currentPath &&
+  currentPath !== '/' && // 排除首页
+  !currentPath.startsWith('/guides/'); // 排除指南页面
+
+---
+
+<!-- 评论区 -->
+{shouldShowComments && (
+  <div class="comments-wrapper">
+    <Comments />
+  </div>
+)}
+
+<!-- 默认的 Starlight Footer -->
+<Default {...Astro.props}><slot /></Default>
+
+<style>
+  .comments-wrapper {
+    margin: 2rem auto 3rem;
+    padding: 0 1rem;
+  }
+</style>

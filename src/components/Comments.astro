@@ -1,0 +1,159 @@
+---
+/**
+ * Giscus 评论组件
+ * 基于 GitHub Discussions 的评论系统
+ *
+ * 使用说明：
+ * 1. 需要在 GitHub 仓库中启用 Discussions 功能
+ * 2. 需要在 https://giscus.app/zh-CN 配置并获取相关 ID
+ * 3. 将获取的配置信息填入下方的 data 属性中
+ */
+
+interface Props {
+  // 可选：自定义主题，默认使用自动适配
+  theme?: string;
+  // 可选：是否启用评论，默认启用
+  enabled?: boolean;
+}
+
+const { theme = 'preferred_color_scheme', enabled = true } = Astro.props;
+
+// 如果禁用评论，不渲染组件
+if (!enabled) {
+  return null;
+}
+---
+
+<div class="comments-container">
+  <div class="comments-divider">
+    <span class="comments-title">💬 讨论区</span>
+  </div>
+
+  <div id="giscus-container">
+    <!-- Giscus 评论将在这里加载 -->
+  </div>
+</div>
+
+<style>
+  .comments-container {
+    margin-top: 4rem;
+    padding-top: 2rem;
+  }
+
+  .comments-divider {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .comments-divider::before,
+  .comments-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--sl-color-gray-5);
+  }
+
+  .comments-title {
+    padding: 0 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--sl-color-text);
+  }
+
+  #giscus-container {
+    min-height: 200px;
+  }
+
+  /* 暗黑模式适配 */
+  :global([data-theme='dark']) .comments-divider::before,
+  :global([data-theme='dark']) .comments-divider::after {
+    border-bottom-color: var(--sl-color-gray-6);
+  }
+
+  /* 响应式设计 */
+  @media (max-width: 768px) {
+    .comments-container {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+    }
+
+    .comments-title {
+      font-size: 1rem;
+    }
+  }
+</style>
+
+<script>
+  // 加载 Giscus 的函数
+  function loadGiscus() {
+    const container = document.getElementById('giscus-container');
+    if (!container) return;
+
+    // 清空容器
+    container.innerHTML = '';
+
+    // 创建 Giscus 脚本
+    const script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.setAttribute('data-repo', 'daiwanxing/ruankao');
+    script.setAttribute('data-repo-id', 'R_kgDOQoiixA');
+    script.setAttribute('data-category', 'General');
+    script.setAttribute('data-category-id', 'DIC_kwDOQoiixM4C1G0O');
+    script.setAttribute('data-mapping', 'pathname');
+    script.setAttribute('data-strict', '0');
+    script.setAttribute('data-reactions-enabled', '1');
+    script.setAttribute('data-emit-metadata', '0');
+    script.setAttribute('data-input-position', 'top');
+    script.setAttribute('data-theme', 'preferred_color_scheme');
+    script.setAttribute('data-lang', 'zh-CN');
+    script.setAttribute('crossorigin', 'anonymous');
+    script.async = true;
+
+    container.appendChild(script);
+  }
+
+  // 动态主题切换支持
+  function updateGiscusTheme() {
+    const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+    if (!iframe) return;
+
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark'
+      ? 'dark'
+      : 'light';
+
+    iframe.contentWindow?.postMessage(
+      { giscus: { setConfig: { theme } } },
+      'https://giscus.app'
+    );
+  }
+
+  // 监听主题变化
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.attributeName === 'data-theme') {
+        updateGiscusTheme();
+      }
+    });
+  });
+
+  // 开始观察
+  if (document.documentElement) {
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
+  }
+
+  // 页面加载完成后加载 Giscus
+  document.addEventListener('DOMContentLoaded', () => {
+    loadGiscus();
+    setTimeout(updateGiscusTheme, 1000);
+  });
+
+  // 监听 Astro 的页面切换事件（View Transitions）
+  document.addEventListener('astro:page-load', () => {
+    loadGiscus();
+    setTimeout(updateGiscusTheme, 1000);
+  });
+</script>

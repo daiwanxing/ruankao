@@ -55,6 +55,7 @@ export default defineConfig({
 			// 自定义组件
 			components: {
 				Head: './src/components/CustomHead.astro',
+				Footer: './src/components/Footer.astro',
 			},
 
 			// 侧边栏配置
