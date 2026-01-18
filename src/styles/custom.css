@@ -111,3 +111,49 @@ pre {
   background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
   color: #fef3c7;
 }
+
+/* ---------------------------------------------------------
+   View Transitions 动画优化：仅针对主内容区
+   --------------------------------------------------------- */
+
+/* 1. 定义动画关键帧 */
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* 2. 为主内容区分配独立的 transition-name */
+/* Starlight 的主内容容器通常是 main 标签 */
+main {
+  view-transition-name: main-content;
+}
+
+/* 3. 应用动画到主内容区 */
+::view-transition-old(main-content) {
+  animation: fadeOut 0.2s ease-out both;
+}
+
+::view-transition-new(main-content) {
+  animation: slideInUp 0.3s ease-out both;
+}
+
+/* 4. 禁用 root 默认的淡入淡出，让其余部分（侧边栏/顶栏）保持静止 */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}

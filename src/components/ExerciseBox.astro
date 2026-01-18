@@ -40,75 +40,91 @@ const storageKey = `exercise_${questionId}`;
 </div>
 
 <script>
-  // 获取所有练习框
-  const exerciseBoxes = document.querySelectorAll('.exercise-box');
+  function initExerciseBoxes() {
+    // 获取所有练习框
+    const exerciseBoxes = document.querySelectorAll('.exercise-box');
 
-  exerciseBoxes.forEach(box => {
-    const element = box as HTMLElement;
-    const questionId = element.dataset.questionId;
-    const correctAnswer = element.dataset.correctAnswer;
-    const storageKey = element.dataset.storageKey;
-    const options = element.querySelectorAll('.option-item');
-    const resultSection = element.querySelector('.result-section') as HTMLElement;
-    const resultHeader = element.querySelector('.result-header') as HTMLElement;
-    const explanationContent = element.querySelector('.explanation-content') as HTMLElement;
+    exerciseBoxes.forEach(box => {
+      const element = box as HTMLElement;
+      // 避免重复绑定
+      if (element.dataset.initialized) return;
+      element.dataset.initialized = 'true';
 
-    // 从 sessionStorage 恢复答案
-    const savedAnswer = sessionStorage.getItem(storageKey || '');
+      const questionId = element.dataset.questionId;
+      const correctAnswer = element.dataset.correctAnswer;
+      const storageKey = element.dataset.storageKey;
+      const options = element.querySelectorAll('.option-item');
+      const resultSection = element.querySelector('.result-section') as HTMLElement;
+      const resultHeader = element.querySelector('.result-header') as HTMLElement;
+      const explanationContent = element.querySelector('.explanation-content') as HTMLElement;
 
-    if (savedAnswer) {
-      // 已答题过，锁定界面
-      lockExercise(savedAnswer);
-    }
+      // 从 sessionStorage 恢复答案
+      const savedAnswer = sessionStorage.getItem(storageKey || '');
 
-    // 为每个选项添加点击事件
-    options.forEach(option => {
-      const optElement = option as HTMLLIElement;
-      optElement.addEventListener('click', () => {
-        // 如果已答题，忽略点击
-        if (sessionStorage.getItem(storageKey || '')) {
-          return;
-        }
+      if (savedAnswer) {
+        // 已答题过，锁定界面
+        lockExercise(element, options, resultSection, resultHeader, explanationContent, savedAnswer, correctAnswer || '');
+      }
 
-        const selectedOption = optElement.dataset.option;
-        if (!selectedOption) return;
+      // 为每个选项添加点击事件
+      options.forEach(option => {
+        const optElement = option as HTMLLIElement;
+        optElement.addEventListener('click', () => {
+          // 如果已答题，忽略点击
+          if (sessionStorage.getItem(storageKey || '')) {
+            return;
+          }
 
-        // 保存到 sessionStorage（一旦保存就无法更改）
-        sessionStorage.setItem(storageKey || '', selectedOption);
+          const selectedOption = optElement.dataset.option;
+          if (!selectedOption) return;
 
-        // 锁定界面
-        lockExercise(selectedOption);
+          // 保存到 sessionStorage（一旦保存就无法更改）
+          sessionStorage.setItem(storageKey || '', selectedOption);
+
+          // 锁定界面
+          lockExercise(element, options, resultSection, resultHeader, explanationContent, selectedOption, correctAnswer || '');
+        });
       });
     });
+  }
 
-    function lockExercise(selectedOption: string) {
-      const isCorrect = selectedOption === correctAnswer;
+  function lockExercise(
+    element: HTMLElement, 
+    options: NodeListOf<Element>, 
+    resultSection: HTMLElement, 
+    resultHeader: HTMLElement, 
+    explanationContent: HTMLElement, 
+    selectedOption: string, 
+    correctAnswer: string
+  ) {
+    const isCorrect = selectedOption === correctAnswer;
 
-      // 添加锁定类
-      element.classList.add('is-locked');
+    // 添加锁定类
+    element.classList.add('is-locked');
 
-      // 禁用所有选项的点击
-      options.forEach(opt => {
-        const optElement = opt as HTMLLIElement;
-        const optLetter = optElement.dataset.option;
+    // 禁用所有选项的点击
+    options.forEach(opt => {
+      const optElement = opt as HTMLLIElement;
+      const optLetter = optElement.dataset.option;
 
-        // 显示已选答案的样式
-        if (optLetter === selectedOption) {
-          opt.classList.add('selected');
-          if (isCorrect) {
-            opt.classList.add('correct');
-          } else {
-            opt.classList.add('incorrect');
-          }
-        } else if (optLetter === correctAnswer && !isCorrect) {
-          // 显示正确答案
+      // 显示已选答案的样式
+      if (optLetter === selectedOption) {
+        opt.classList.add('selected');
+        if (isCorrect) {
           opt.classList.add('correct');
+        } else {
+          opt.classList.add('incorrect');
         }
-      });
+      } else if (optLetter === correctAnswer && !isCorrect) {
+        // 显示正确答案
+        opt.classList.add('correct');
+      }
+    });
 
-      // 显示结果区域
-      resultSection.style.display = 'block';
+    // 显示结果区域
+    if (resultSection) resultSection.style.display = 'block';
 
+    if (resultHeader) {
       if (isCorrect) {
         resultHeader.innerHTML = '<span class="result-icon">✅</span> <span class="result-text">回答正确！</span>';
         resultHeader.className = 'result-header correct';
@@ -116,15 +132,15 @@ const storageKey = `exercise_${questionId}`;
         resultHeader.innerHTML = `<span class="result-icon">❌</span> <span class="result-text">回答错误。正确答案是 ${correctAnswer}</span>`;
         resultHeader.className = 'result-header incorrect';
       }
-
-      // 显示解析
-      explanationContent.style.display = 'block';
     }
 
-    function showResult(selectedOption: string, animate: boolean) {
-      // 此函数已不再使用，保留兼容性
-    }
-  });
+    // 显示解析
+    if (explanationContent) explanationContent.style.display = 'block';
+  }
+
+  // 初始化并监听过渡事件
+  initExerciseBoxes();
+  document.addEventListener('astro:page-load', initExerciseBoxes);
 </script>
 
 <style>

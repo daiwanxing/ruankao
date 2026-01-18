@@ -62,31 +62,41 @@ const formatText = (text: string) => {
 </div>
 
 <script>
-  // 为所有案例组件添加交互逻辑
-  document.querySelectorAll('.case-study-wrapper').forEach(wrapper => {
-    const toggles = wrapper.querySelectorAll('.toggle-btn');
-    
-    toggles.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const button = e.currentTarget as HTMLButtonElement;
-        const answerContent = button.nextElementSibling as HTMLElement;
-        
-        const isHidden = answerContent.style.display === 'none';
-        
-        if (isHidden) {
-          answerContent.style.display = 'block';
-          answerContent.classList.add('fade-in');
-          button.innerHTML = '<span class="btn-icon">🙈</span> 收起答案';
-          button.classList.add('active');
-        } else {
-          answerContent.style.display = 'none';
-          answerContent.classList.remove('fade-in');
-          button.innerHTML = '<span class="btn-icon">👁️</span> 查看参考答案与评分要点';
-          button.classList.remove('active');
-        }
+  function initCaseStudies() {
+    // 为所有案例组件添加交互逻辑
+    document.querySelectorAll('.case-study-wrapper').forEach(wrapper => {
+      const element = wrapper as HTMLElement;
+      if (element.dataset.initialized) return;
+      element.dataset.initialized = 'true';
+
+      const toggles = element.querySelectorAll('.toggle-btn');
+      
+      toggles.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const button = e.currentTarget as HTMLButtonElement;
+          const answerContent = button.nextElementSibling as HTMLElement;
+          
+          const isHidden = answerContent.style.display === 'none';
+          
+          if (isHidden) {
+            answerContent.style.display = 'block';
+            answerContent.classList.add('fade-in');
+            button.innerHTML = '<span class="btn-icon">🙈</span> 收起答案';
+            button.classList.add('active');
+          } else {
+            answerContent.style.display = 'none';
+            answerContent.classList.remove('fade-in');
+            button.innerHTML = '<span class="btn-icon">👁️</span> 查看参考答案与评分要点';
+            button.classList.remove('active');
+          }
+        });
       });
     });
-  });
+  }
+
+  // 初始化并监听过渡事件
+  initCaseStudies();
+  document.addEventListener('astro:page-load', initCaseStudies);
 </script>
 
 <style>
