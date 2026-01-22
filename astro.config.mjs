@@ -13,7 +13,7 @@ export default defineConfig({
 
 			// 社交链接
 			social: [
-				{ icon: 'github', label: 'GitHub', href: 'https://github.com/daiwanxing/supervision-teaching-site' }
+				{ icon: 'github', label: 'GitHub', href: 'https://github.com/daiwanxing/ruankao' }
 			],
 
 			// PWA 相关 meta 标签
@@ -147,7 +147,7 @@ export default defineConfig({
 			
 			// 编辑链接配置
 			editLink: {
-				baseUrl: 'https://github.com/daiwanxing/supervision-teaching-site/edit/main/',
+				baseUrl: 'https://github.com/daiwanxing/ruankao/edit/main/',
 			},
 			
 			// 最后更新时间
