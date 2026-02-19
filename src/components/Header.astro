@@ -1,0 +1,258 @@
+---
+import Search from './Search.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '' } = Astro.props;
+---
+
+<header class="header">
+  <div class="header-inner">
+    <!-- 左侧：品牌标识 -->
+    <div class="header-brand">
+      <a href="/" class="brand-link">
+        <span class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="brand-text">监理师备考</span>
+      </a>
+    </div>
+
+    <!-- 中间：主导航 -->
+    <!-- <nav class="header-nav" aria-label="主导航">
+      <a href="/guides/study-guide/" class="nav-link">学习指南</a>
+      <a href="/guides/exam-outline/" class="nav-link">考试大纲</a>
+    </nav> -->
+
+    <!-- 右侧：功能按钮 -->
+    <div class="header-actions">
+      <Search />
+      <ThemeToggle />
+      <a
+        href="https://github.com/daiwanxing/ruankao"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="github-link"
+        aria-label="GitHub 仓库"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+      </a>
+      <!-- 移动端菜单按钮 -->
+      <button
+        class="mobile-menu-button"
+        id="mobile-menu-button"
+        type="button"
+        aria-label="打开菜单"
+        aria-expanded="false"
+        aria-controls="sidebar"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+    z-index: 100;
+  }
+
+  :global([data-theme='light']) .header {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    max-width: 100%;
+    padding: 0 var(--space-4);
+    margin: 0 auto;
+  }
+
+  /* 品牌标识 */
+  .header-brand {
+    flex-shrink: 0;
+  }
+
+  .brand-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-text-emphasized);
+    text-decoration: none;
+    font-weight: var(--font-semibold);
+    font-size: var(--text-base);
+    transition: opacity var(--transition-fast);
+  }
+
+  .brand-link:hover {
+    opacity: 0.8;
+    text-decoration: none;
+  }
+
+  .brand-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-brand-primary);
+  }
+
+  /* 主导航 */
+  .header-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    margin-left: var(--space-8);
+  }
+
+  .nav-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    transition: color var(--transition-fast);
+    position: relative;
+  }
+
+  .nav-link:hover {
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-brand-primary);
+    transition: width var(--transition-fast);
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  /* 功能按钮 */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-shrink: 0;
+  }
+
+  .github-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    transition: all var(--transition-fast);
+  }
+
+  .github-link:hover {
+    background-color: var(--color-bg-card);
+    color: var(--color-text-primary);
+  }
+
+  /* 移动端菜单按钮 */
+  .mobile-menu-button {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .mobile-menu-button:hover {
+    background-color: var(--color-bg-card);
+    color: var(--color-text-primary);
+  }
+
+  /* 响应式 */
+  @media (max-width: 1024px) {
+    .header-nav {
+      display: none;
+    }
+
+    .brand-text {
+      display: none;
+    }
+
+    .mobile-menu-button {
+      display: flex;
+    }
+  }
+</style>
+
+<script>
+  let menuAbort: AbortController | null = null;
+
+  function initMobileMenu() {
+    menuAbort?.abort();
+    menuAbort = new AbortController();
+    const signal = menuAbort.signal;
+
+    const menuButton = document.getElementById('mobile-menu-button');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    if (!menuButton || !sidebar) return;
+
+    menuButton.addEventListener('click', () => {
+      const isOpen = sidebar.classList.toggle('open');
+      menuButton.setAttribute('aria-expanded', String(isOpen));
+
+      // 同时控制遮罩层
+      if (overlay) {
+        overlay.classList.toggle('visible', isOpen);
+      }
+
+      // 更新按钮图标
+      const svg = menuButton.querySelector('svg');
+      if (svg) {
+        if (isOpen) {
+          svg.innerHTML = '<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>';
+        } else {
+          svg.innerHTML = '<line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>';
+        }
+      }
+    }, { signal });
+  }
+
+  document.addEventListener('astro:page-load', initMobileMenu);
+</script>

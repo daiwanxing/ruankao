@@ -1,33 +1,100 @@
 ---
-import type { Props } from '@astrojs/starlight/props';
-import Default from '@astrojs/starlight/components/Footer.astro';
-import Comments from './Comments.astro';
+interface Props {
+  currentPath?: string;
+}
 
-// 从 Astro.url 获取当前页面路径
-const currentPath = Astro.url.pathname;
+const { currentPath = '' } = Astro.props;
 
 // 判断是否应该显示评论
 // 排除首页和某些特殊页面
 const shouldShowComments =
   currentPath &&
-  currentPath !== '/' && // 排除首页
-  !currentPath.startsWith('/guides/'); // 排除指南页面
-
+  currentPath !== '/' &&
+  !currentPath.startsWith('/guides/');
 ---
 
 <!-- 评论区 -->
 {shouldShowComments && (
   <div class="comments-wrapper">
-    <Comments />
+    <!-- 评论组件 -->
+    <div id="comments-container">
+      <!-- 评论功能将在客户端加载 -->
+    </div>
   </div>
 )}
 
-<!-- 默认的 Starlight Footer -->
-<Default {...Astro.props}><slot /></Default>
+<!-- 页脚 -->
+<footer class="site-footer">
+  <div class="footer-content">
+    <p class="footer-copyright">
+      &copy; {new Date().getFullYear()} 计算机系统监理师备考指南
+    </p>
+    <div class="footer-links">
+      <a href="https://github.com/daiwanxing/ruankao" target="_blank" rel="noopener noreferrer">
+        GitHub
+      </a>
+      <span class="footer-divider">·</span>
+      <a href="/rss.xml">RSS</a>
+    </div>
+  </div>
+</footer>
 
 <style>
   .comments-wrapper {
-    margin: 2rem auto 3rem;
-    padding: 0 1rem;
+    margin: var(--space-8) 0;
+    padding: var(--space-6);
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+  }
+
+  .site-footer {
+    margin-top: var(--space-12);
+    padding: var(--space-6) 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    text-align: center;
+  }
+
+  .footer-copyright {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .footer-links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+  }
+
+  .footer-links a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .footer-links a:hover {
+    color: var(--color-brand-primary);
+    text-decoration: none;
+  }
+
+  .footer-divider {
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 640px) {
+    .footer-content {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+    }
   }
 </style>

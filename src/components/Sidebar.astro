@@ -1,0 +1,585 @@
+---
+interface NavItem {
+  label: string;
+  href?: string;
+  items?: NavItem[];
+  collapsed?: boolean;
+}
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+// 侧边栏导航配置
+const sidebar: NavItem[] = [
+  {
+    label: '开始学习',
+    items: [
+      { label: '学习指南', href: '/guides/study-guide/' },
+      { label: '考试大纲', href: '/guides/exam-outline/' },
+      { label: '备考突破指南', href: '/guides/exam-breakthrough/' },
+    ],
+  },
+  {
+    label: '基础知识篇',
+    collapsed: false,
+    items: [
+      {
+        label: '第1章 信息化发展',
+        href: '/chapter-01/01-info-informatization/',
+        items: [
+          { label: '1.1 信息与信息化', href: '/chapter-01/01-info-informatization/' },
+          { label: '1.2 信息基础设施', href: '/chapter-01/02-info-infrastructure/' },
+          { label: '1.3 信息化应用', href: '/chapter-01/03-info-applications/' },
+        ]
+      },
+      {
+        label: '第2章 信息系统',
+        href: '/chapter-02/01-info-system/',
+        items: [
+          { label: '2.1 信息系统', href: '/chapter-02/01-info-system/' },
+          { label: '2.2 系统工程', href: '/chapter-02/02-systems-engineering/' },
+          { label: '2.3 软件工程', href: '/chapter-02/03-software-engineering/' },
+          { label: '2.4 部署交付', href: '/chapter-02/04-deployment-delivery/' },
+          { label: '2.5 数据工程', href: '/chapter-02/05-data-engineering/' },
+        ]
+      },
+      {
+        label: '第3章 信息网络',
+        href: '/chapter-03/01-network-framework/',
+        items: [
+          { label: '3.1 网络体系框架', href: '/chapter-03/01-network-framework/' },
+          { label: '3.2 TCP/IP协议族', href: '/chapter-03/02-tcp-ip/' },
+          { label: '3.3 网络传输平台', href: '/chapter-03/03-transmission-platform/' },
+          { label: '3.4 应用服务平台', href: '/chapter-03/04-application-platform/' },
+          { label: '3.5 安全服务平台', href: '/chapter-03/05-security-platform/' },
+          { label: '3.6 网络管理平台', href: '/chapter-03/06-network-management/' },
+          { label: '3.7 环境系统建设', href: '/chapter-03/07-environment-system/' },
+        ]
+      },
+      {
+        label: '第4章 信息资源',
+        href: '/chapter-04/01-data-resource-platform/',
+        items: [
+          { label: '4.1 数据资源平台', href: '/chapter-04/01-data-resource-platform/' },
+          { label: '4.2 云资源系统', href: '/chapter-04/02-cloud-resource-system/' },
+        ]
+      },
+      {
+        label: '第5章 信息应用',
+        href: '/chapter-05/01-info-application-system/',
+        items: [
+          { label: '5.1 系统分类', href: '/chapter-05/01-info-application-classification/' },
+          { label: '5.2 典型系统', href: '/chapter-05/02-typical-info-systems/' },
+        ]
+      },
+      {
+        label: '第6章 信息安全',
+        href: '/chapter-06/01-info-security/',
+        items: [
+          { label: '6.1 安全属性', href: '/chapter-06/01-security-attributes/' },
+          { label: '6.2 安全技术', href: '/chapter-06/02-security-technologies/' },
+          { label: '6.3 等级保护', href: '/chapter-06/03-network-security-level/' },
+          { label: '6.4 数据安全', href: '/chapter-06/04-data-security/' },
+        ]
+      },
+      {
+        label: '第7章 运行维护',
+        href: '/chapter-07/01-operation-maintenance/',
+        items: [
+          { label: '7.1 运维概述', href: '/chapter-07/01-ops-overview/' },
+          { label: '7.2 运维能力', href: '/chapter-07/02-ops-capability/' },
+          { label: '7.3 核心考点', href: '/chapter-07/03-ops-key-points/' },
+        ]
+      },
+    ],
+  },
+  {
+    label: '监理知识篇',
+    collapsed: false,
+    items: [
+      {
+        label: '第8章 监理概论',
+        href: '/chapter-08/01-basic-concepts/',
+        items: [
+          { label: '8.1 监理基本概念', href: '/chapter-08/01-basic-concepts/' },
+          { label: '8.2 组织与人员', href: '/chapter-08/02-organization-personnel/' },
+          { label: '8.3 工作内容与方法', href: '/chapter-08/03-work-content-methods/' },
+          { label: '8.4 重点归纳', href: '/chapter-08/04-key-points/' },
+          { label: '8.5 风险管理', href: '/chapter-08/05-risk-management/' },
+        ]
+      },
+      {
+        label: '第9章 质量控制',
+        href: '/chapter-09/01-quality-control/',
+        items: [
+          { label: '9.1 质量概述', href: '/chapter-09/01-quality-overview/' },
+          { label: '9.2 设计质量控制', href: '/chapter-09/02-design-quality-control/' },
+          { label: '9.3 实施质量控制', href: '/chapter-09/03-implementation-quality/' },
+          { label: '9.4 验收管理', href: '/chapter-09/04-acceptance-management/' },
+          { label: '9.5 重点归纳', href: '/chapter-09/05-quality-key-points/' },
+        ]
+      },
+      { label: '第10章 进度与成本', href: '/chapter-10/01-schedule-cost/' },
+      { label: '第11章 合同与知识产权', href: '/chapter-11/01-contract-ip/' },
+      { label: '第12章 信息与资料管理', href: '/chapter-12/01-information-mgmt/' },
+      { label: '第13章 组织协调与沟通', href: '/chapter-13/01-coordination-communication/' },
+    ],
+  },
+  {
+    label: '高级监理篇',
+    collapsed: true,
+    items: [
+      { label: '第14章 信息管理', href: '/chapter-14/01-info-management-overview/' },
+      { label: '第15章 组织协调', href: '/chapter-15/01-coordination-overview/' },
+      { label: '第16章 项目管理', href: '/chapter-16/01-project-management-overview/' },
+      { label: '第17章 变更控制', href: '/chapter-17/01-change-control-overview/' },
+      { label: '第18章 风险管理', href: '/chapter-18/01-risk-management-overview/' },
+      { label: '第19章 监理支撑要素', href: '/chapter-19/01-supervision-elements/' },
+      { label: '第20章 监理基础工作', href: '/chapter-20/01-supervision-basics/' },
+      { label: '第21章 基础设施监理', href: '/chapter-21/01-infrastructure-supervision/' },
+      { label: '第22章 软件工程监理', href: '/chapter-22/01-software-supervision/' },
+      { label: '第23章 数据中心监理', href: '/chapter-23/01-datacenter-supervision/' },
+      { label: '第24章 信息安全监理', href: '/chapter-24/01-info-security-supervision/' },
+      { label: '第25章 运行维护监理', href: '/chapter-25/01-ops-maintenance-supervision/' },
+    ],
+  },
+];
+
+// 检查当前路径是否匹配
+function isActive(href: string, currentPath: string): boolean {
+  if (!href) return false;
+  // 移除尾部斜杠进行比较
+  const normalizedHref = href.replace(/\/$/, '');
+  const normalizedPath = currentPath.replace(/\/$/, '');
+  // 精确匹配当前路径
+  return normalizedPath === normalizedHref;
+}
+
+// 检查当前路径是否属于某个导航组
+function isGroupActive(group: NavItem, currentPath: string): boolean {
+  if (!group.items) return false;
+  const normalizedPath = currentPath.replace(/\/$/, '');
+  return group.items.some((item) => {
+    if (item.href && normalizedPath === item.href.replace(/\/$/, '')) return true;
+    if (item.items) {
+      return item.items.some((subItem) =>
+        subItem.href && normalizedPath === subItem.href.replace(/\/$/, '')
+      );
+    }
+    return false;
+  });
+}
+---
+
+<!-- 移动端遮罩层 -->
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<aside class="sidebar" id="sidebar">
+  <nav class="sidebar-nav" aria-label="文档导航">
+    {sidebar.map((group, index) => (
+      <div class="nav-group">
+        <button
+          class="nav-group-header"
+          aria-expanded={group.collapsed !== true || isGroupActive(group, currentPath)}
+          aria-controls={`nav-group-${index}`}
+        >
+          <span class="nav-group-title">{group.label}</span>
+          <svg
+            class:list={['nav-group-icon', { collapsed: group.collapsed === true && !isGroupActive(group, currentPath) }]}
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <ul class="nav-list" id={`nav-group-${index}`} class:list={{ collapsed: group.collapsed === true && !isGroupActive(group, currentPath) }}>
+          {group.items?.map((item) => (
+            <li class="nav-item">
+              {item.items ? (
+                // 有子菜单的项 - 使用button避免导航
+                <div class="nav-item-group">
+                  <button
+                    type="button"
+                    class:list={['nav-link', 'has-children', 'nav-group-toggle']}
+                    aria-expanded={true}
+                    onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); this.nextElementSibling.classList.toggle('expanded'); return false;"
+                  >
+                    {item.label}
+                    <svg
+                      class="nav-toggle-icon"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </button>
+                  <ul class="nav-sublist expanded">
+                    {item.items.map((subItem) => (
+                      <li class="nav-subitem">
+                        <a
+                          href={subItem.href}
+                          class:list={['nav-link', 'nav-sublink', { active: isActive(subItem.href || '', currentPath) }]}
+                        >
+                          {subItem.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                // 无子菜单的项
+                <a
+                  href={item.href}
+                  class:list={['nav-link', { active: isActive(item.href || '', currentPath) }]}
+                >
+                  {item.label}
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </nav>
+</aside>
+
+<script>
+  let sidebarAbort: AbortController | null = null;
+
+  function initSidebar() {
+    sidebarAbort?.abort();
+    sidebarAbort = new AbortController();
+    const signal = sidebarAbort.signal;
+
+    const sidebar = document.getElementById('sidebar');
+    if (!sidebar) return;
+
+    // 滚动到当前高亮的菜单项
+    const activeLink = sidebar.querySelector('.nav-link.active');
+    if (activeLink) {
+      activeLink.scrollIntoView({
+        behavior: 'auto',
+        block: 'center',
+        inline: 'nearest'
+      });
+    }
+
+    const groupHeaders = sidebar.querySelectorAll('.nav-group-header');
+
+    groupHeaders.forEach((header) => {
+      header.addEventListener('click', () => {
+        const group = header.closest('.nav-group');
+        const list = group?.querySelector('.nav-list');
+        const icon = header.querySelector('.nav-group-icon');
+        const expanded = header.getAttribute('aria-expanded') === 'true';
+
+        header.setAttribute('aria-expanded', String(!expanded));
+        list?.classList.toggle('collapsed');
+        icon?.classList.toggle('collapsed');
+      }, { signal });
+    });
+
+    // 有子菜单的父项按钮 - 键盘支持
+    const groupToggles = sidebar.querySelectorAll('.nav-group-toggle');
+    groupToggles.forEach((toggle) => {
+      toggle.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          (toggle as HTMLElement).click();
+        }
+      }, { signal });
+    });
+  }
+
+  document.addEventListener('astro:page-load', initSidebar);
+</script>
+
+<style>
+  .sidebar {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    width: var(--sidebar-width);
+    height: calc(100vh - var(--header-height));
+    background-color: var(--color-bg-sidebar);
+    border-right: 1px solid var(--color-border);
+    overflow-y: auto;
+    z-index: 50;
+  }
+
+  .sidebar-nav {
+    padding: var(--space-4);
+  }
+
+  /* 导航组 */
+  .nav-group {
+    margin-bottom: var(--space-2);
+  }
+
+  .nav-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    border: none;
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--color-text-emphasized);
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+  }
+
+  .nav-group-header:hover {
+    background-color: var(--color-bg-card);
+  }
+
+  .nav-group-icon {
+    transition: transform var(--transition-fast);
+  }
+
+  .nav-group-icon.collapsed {
+    transform: rotate(-90deg);
+  }
+
+  /* 导航列表 */
+  .nav-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-1) 0 0 0;
+    overflow: hidden;
+    transition: max-height var(--transition-slow) ease-in-out;
+  }
+
+  .nav-list.collapsed {
+    max-height: 0;
+    margin: 0;
+  }
+
+  .nav-list:not(.collapsed) {
+    max-height: 1000px;
+  }
+
+  /* 导航项 */
+  .nav-item {
+    margin: 0;
+  }
+
+  /* 有子菜单的导航项 */
+  .nav-item-group {
+    margin: 0;
+  }
+
+  .nav-link.has-children {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: var(--space-3);
+    font-weight: var(--font-medium);
+    color: var(--color-text-emphasized);
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    text-align: left;
+    width: 100%;
+  }
+
+  .nav-toggle-icon {
+    flex-shrink: 0;
+    transition: transform var(--transition-fast);
+  }
+
+  .nav-group-toggle[aria-expanded='false'] .nav-toggle-icon {
+    transform: rotate(-90deg);
+  }
+
+  .nav-link.has-children:hover {
+    background-color: var(--color-bg-card);
+  }
+
+  .nav-link.has-children::before {
+    display: none;
+  }
+
+  /* 子菜单默认展开 */
+  .nav-sublist {
+    display: block;
+  }
+
+  .nav-sublist:not(.expanded) {
+    display: none;
+  }
+
+  /* 二级菜单 */
+  .nav-sublist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    padding-left: var(--space-4);
+  }
+
+  .nav-subitem {
+    margin: 0;
+  }
+
+  .nav-sublink {
+    padding: var(--space-1) var(--space-3);
+    padding-left: var(--space-6);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  .nav-sublink:hover {
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-card);
+  }
+
+  .nav-sublink.active {
+    color: var(--color-brand-primary);
+    background-color: var(--color-bg-elevated);
+  }
+
+  .nav-link {
+    display: block;
+    padding: var(--space-2) var(--space-3);
+    padding-left: var(--space-6);
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    position: relative;
+  }
+
+  .nav-link:hover {
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-card);
+    text-decoration: none;
+  }
+
+  .nav-link.active {
+    color: var(--color-brand-primary);
+    background-color: var(--color-bg-elevated);
+  }
+
+  .nav-link.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60%;
+    background-color: var(--color-brand-primary);
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* 响应式 */
+  @media (max-width: 1024px) {
+    .sidebar {
+      transform: translateX(-100%);
+      transition: transform var(--transition-slow);
+      z-index: 90;
+      width: 280px;
+    }
+
+    .sidebar.open {
+      transform: translateX(0);
+    }
+
+    /* 移动端遮罩层 */
+    .sidebar-overlay {
+      display: block !important;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition-slow);
+    }
+
+    .sidebar-overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  /* 桌面端隐藏 */
+  @media (min-width: 1025px) {
+    .sidebar-overlay {
+      display: none !important;
+    }
+  }
+
+  /* 移动端遮罩层 - 基础样式 */
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    top: var(--header-height);
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 80;
+  }
+</style>
+
+<script>
+  let overlayAbort: AbortController | null = null;
+
+  function initSidebarOverlay() {
+    overlayAbort?.abort();
+    overlayAbort = new AbortController();
+    const signal = overlayAbort.signal;
+
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    if (!sidebar || !overlay) return;
+
+    // 点击遮罩层关闭侧边栏
+    overlay.addEventListener('click', () => {
+      closeSidebar();
+    }, { signal });
+
+    // 移动端点击导航链接后自动关闭侧边栏
+    const navLinks = sidebar.querySelectorAll('.nav-link');
+    navLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        // 检测是否为移动端
+        if (window.innerWidth <= 1024) {
+          closeSidebar();
+        }
+      }, { signal });
+    });
+
+    function closeSidebar() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('visible');
+
+      // 通知 Header 更新按钮状态
+      const menuButton = document.getElementById('mobile-menu-button');
+      if (menuButton) {
+        menuButton.setAttribute('aria-expanded', 'false');
+        // 恢复汉堡菜单图标
+        const svg = menuButton.querySelector('svg');
+        if (svg) {
+          svg.innerHTML = '<line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>';
+        }
+      }
+    }
+  }
+
+  document.addEventListener('astro:page-load', initSidebarOverlay);
+</script>

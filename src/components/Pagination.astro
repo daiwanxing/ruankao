@@ -1,0 +1,124 @@
+---
+interface Props {
+  prev?: {
+    href: string;
+    label: string;
+  };
+  next?: {
+    href: string;
+    label: string;
+  };
+}
+
+const { prev, next } = Astro.props;
+---
+
+{(prev || next) && (
+  <nav class="pagination" aria-label="页面导航">
+    {prev && (
+      <a href={prev.href} class="pagination-link pagination-prev">
+        <svg class="pagination-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <div class="pagination-content">
+          <span class="pagination-label">上一页</span>
+          <span class="pagination-title">{prev.label}</span>
+        </div>
+      </a>
+    )}
+    {next && (
+      <a href={next.href} class="pagination-link pagination-next">
+        <div class="pagination-content">
+          <span class="pagination-label">下一页</span>
+          <span class="pagination-title">{next.label}</span>
+        </div>
+        <svg class="pagination-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    )}
+  </nav>
+)}
+
+<style>
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-top: var(--space-12);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .pagination-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    max-width: 45%;
+  }
+
+  .pagination-link:hover {
+    border-color: var(--color-brand-primary);
+    background-color: var(--color-bg-card);
+    text-decoration: none;
+  }
+
+  .pagination-icon {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+  }
+
+  .pagination-prev .pagination-icon {
+    transform: rotate(180deg);
+  }
+
+  .pagination-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    overflow: hidden;
+  }
+
+  .pagination-label {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .pagination-title {
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--color-brand-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .pagination-next {
+    margin-left: auto;
+    text-align: right;
+  }
+
+  /* 响应式 */
+  @media (max-width: 640px) {
+    .pagination {
+      flex-direction: column;
+    }
+
+    .pagination-link {
+      max-width: 100%;
+    }
+
+    .pagination-next {
+      margin-left: 0;
+    }
+  }
+</style>

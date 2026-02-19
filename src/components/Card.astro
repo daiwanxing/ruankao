@@ -1,0 +1,104 @@
+---
+interface Props {
+  title?: string;
+  icon?: string;
+}
+
+const { title, icon } = Astro.props;
+
+// Emoji 映射
+const emojiMap: Record<string, string> = {
+  info: 'ℹ️',
+  information: 'ℹ️',
+  warning: '⚠️',
+  warn: '⚠️',
+  success: '✅',
+  correct: '✅',
+  error: '❌',
+  incorrect: '❌',
+  book: '📚',
+  docs: '📚',
+  note: '📝',
+  tip: '💡',
+  idea: '💡',
+  star: '⭐',
+  important: '⭐',
+  lock: '🔒',
+  security: '🔒',
+  key: '🔑',
+  computer: '💻',
+  tech: '💻',
+  network: '🌐',
+  web: '🌐',
+  data: '📊',
+  database: '🗄️',
+  tools: '🔧',
+  settings: '⚙️',
+  question: '❓',
+  help: '❓',
+  check: '✓',
+  cross: '✗',
+  warning: '⚠️',
+  fire: '🔥',
+  rocket: '🚀',
+  target: '🎯',
+  chart: '📈',
+  clock: '⏰',
+  calendar: '📅',
+  folder: '📁',
+  file: '📄',
+  email: '📧',
+  phone: '📞',
+  user: '👤',
+  users: '👥',
+  team: '👥',
+  gear: '⚙️',
+  shield: '🛡️',
+  light: '💡',
+  bulb: '💡',
+};
+
+// 获取最终的 icon 值
+const getIcon = (iconKey: string | undefined) => {
+  if (!iconKey) return null;
+  return emojiMap[iconKey.toLowerCase()] || iconKey;
+};
+
+const finalIcon = getIcon(icon);
+---
+
+<div class="card">
+  {finalIcon && <div class="card-icon">{finalIcon}</div>}
+  {title && <h3 class="card-title">{title}</h3>}
+  <div class="card-content">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    background: var(--color-bg-card);
+    margin: var(--space-4) 0;
+  }
+
+  .card-icon {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-2);
+  }
+
+  .card-title {
+    margin: 0 0 var(--space-3) 0;
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-emphasized);
+  }
+
+  .card-content {
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+</style>

@@ -50,10 +50,10 @@ const config = categoryConfig[category];
 <style>
   .memory-card {
     position: relative;
-    border-radius: 16px;
-    padding: 1.5rem;
-    margin: 1.5rem 0;
-    background: var(--sl-color-gray-6);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    margin: var(--space-6) 0;
+    background: var(--color-bg-card);
     border: 1px solid var(--card-border);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
@@ -72,58 +72,58 @@ const config = categoryConfig[category];
 
   .memory-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(99, 102, 241, 0.15);
+    box-shadow: 0 12px 40px rgba(96, 165, 250, 0.15);
   }
 
   .card-header {
-    margin-bottom: 1rem;
+    margin-bottom: var(--space-4);
   }
 
   .card-meta {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 0.75rem;
+    margin-bottom: var(--space-3);
   }
 
   .category-badge {
     display: inline-flex;
     align-items: center;
-    padding: 0.25rem 0.625rem;
-    font-size: 0.65rem;
-    font-weight: 600;
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-xs);
+    font-weight: var(--font-semibold);
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     background: var(--card-gradient);
     color: white;
   }
 
   .importance {
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
     letter-spacing: 0.1em;
-    color: var(--color-accent-light);
+    color: #fbbf24;
   }
 
   .card-title {
     margin: 0;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--sl-color-white);
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-emphasized);
     line-height: 1.4;
   }
 
   .card-body {
-    padding: 1rem;
+    padding: var(--space-4);
     background: rgba(255, 255, 255, 0.03);
-    border-radius: 10px;
+    border-radius: var(--radius-lg);
     border: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   .formula {
     margin: 0;
-    font-size: 1.15rem;
-    font-weight: 600;
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
     text-align: center;
     line-height: 1.6;
     background: var(--card-gradient);
@@ -135,25 +135,15 @@ const config = categoryConfig[category];
   /* 响应式 */
   @media (max-width: 768px) {
     .memory-card {
-      padding: 1.25rem;
+      padding: var(--space-5);
     }
 
     .card-title {
-      font-size: 0.95rem;
+      font-size: var(--text-sm);
     }
 
     .formula {
-      font-size: 1rem;
+      font-size: var(--text-base);
     }
-  }
-
-  /* 暗黑模式优化 */
-  :global([data-theme='dark']) .memory-card {
-    background: linear-gradient(180deg, rgba(30, 30, 40, 0.8) 0%, rgba(20, 20, 30, 0.9) 100%);
-  }
-
-  :global([data-theme='dark']) .card-body {
-    background: rgba(0, 0, 0, 0.2);
-    border-color: rgba(255, 255, 255, 0.05);
   }
 </style>

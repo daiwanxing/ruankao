@@ -1,0 +1,24 @@
+---
+interface Props {
+  stagger?: boolean;
+}
+
+const { stagger = false } = Astro.props;
+---
+
+<div class:list={['card-grid', { stagger }]}>
+  <slot />
+</div>
+
+<style>
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-4) 0;
+  }
+
+  .card-grid.stagger > :nth-child(2) {
+    margin-top: var(--space-8);
+  }
+</style>

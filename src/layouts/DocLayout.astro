@@ -1,0 +1,81 @@
+---
+import '../styles/custom.css';
+import { ClientRouter } from 'astro:transitions';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = '计算机系统监理师备考指南' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+
+    <!-- View Transitions (Astro 5) -->
+    <ClientRouter />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap" />
+
+    <!-- PWA 相关 -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#000000" />
+
+    <!-- Google Analytics -->
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-2EP7SV0D17');
+    </script>
+    <script is:inline src="https://www.googletagmanager.com/gtag/js?id=G-2EP7SV0D17" async></script>
+
+    <!-- View Transitions -->
+    <script is:inline>
+      // 主题初始化脚本 - 防止闪烁
+      (function() {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        } else if (!theme && window.matchMedia('(prefers-color-scheme: light)').matches) {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+
+      // 处理 View Transitions 后的主题恢复
+      document.addEventListener('astro:after-swap', function() {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        } else if (!theme && window.matchMedia('(prefers-color-scheme: light)').matches) {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style>
+  /* 全局样式 */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    min-height: 100vh;
+  }
+</style>

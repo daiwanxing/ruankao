@@ -1,370 +1,162 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import starlight from '@astrojs/starlight';
+import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
 import { VitePWA } from 'vite-plugin-pwa';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://supervision-teaching-site.vercel.app',
-	integrations: [
-		starlight({
-			title: '计算机系统监理师备考指南',
-			description: '系统化的计算机系统监理师考试复习指南',
+  site: 'https://supervision-teaching-site.vercel.app',
+  integrations: [
+    mdx(),
+    sitemap(),
+  ],
 
-			// 社交链接
-			social: [
-				{ icon: 'github', label: 'GitHub', href: 'https://github.com/daiwanxing/ruankao' }
-			],
+  // Markdown 配置
+  markdown: {
+    shikiConfig: {
+      theme: 'github-dark',
+      wrap: true,
+    },
+  },
 
-			// PWA 相关 meta 标签
-			head: [
-				// Google Fonts - 优雅杂志风字体
-				{
-					tag: 'link',
-					attrs: {
-						rel: 'preconnect',
-						href: 'https://fonts.googleapis.com',
-					},
-				},
-				{
-					tag: 'link',
-					attrs: {
-						rel: 'preconnect',
-						href: 'https://fonts.gstatic.com',
-						crossorigin: 'anonymous',
-					},
-				},
-				{
-					tag: 'link',
-					attrs: {
-						rel: 'stylesheet',
-						href: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Serif+SC:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap',
-					},
-				},
-				{
-					tag: 'script',
-					attrs: {
-						src: 'https://www.googletagmanager.com/gtag/js?id=G-2EP7SV0D17',
-						async: true,
-					},
-				},
-				{
-					tag: 'script',
-					content: `
-						window.dataLayer = window.dataLayer || [];
-						function gtag(){dataLayer.push(arguments);}
-						gtag('js', new Date());
-						gtag('config', 'G-2EP7SV0D17');
-					`,
-				},
-				{
-					tag: 'link',
-					attrs: { rel: 'manifest', href: '/manifest.webmanifest' },
-				},
-				{
-					tag: 'meta',
-					attrs: { name: 'theme-color', content: '#1e293b' },
-				},
-				{
-					tag: 'meta',
-					attrs: { name: 'apple-mobile-web-app-capable', content: 'yes' },
-				},
-				{
-					tag: 'meta',
-					attrs: { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
-				},
-			],
-
-			// 自定义组件
-			components: {
-				Head: './src/components/CustomHead.astro',
-				Footer: './src/components/Footer.astro',
-			},
-
-			// 侧边栏配置
-			sidebar: [
-				{
-					label: '📖 开始学习',
-					items: [
-						{ label: '学习指南', link: '/guides/study-guide/' },
-						{ label: '考试大纲', link: '/guides/exam-outline/' },
-						{ label: '备考突破指南', link: '/guides/exam-breakthrough/' },
-					],
-				},
-				{
-					label: '📕 基础知识篇',
-					collapsed: false,
-					items: [
-						{
-							label: '第1章 信息化发展',
-							autogenerate: { directory: 'chapter-01' },
-						},
-						{
-							label: '第2章 信息系统',
-							autogenerate: { directory: 'chapter-02' },
-						},
-						{
-							label: '第3章 信息网络',
-							autogenerate: { directory: 'chapter-03' },
-						},
-						{
-							label: '第4章 信息资源',
-							autogenerate: { directory: 'chapter-04' },
-						},
-						{
-							label: '第5章 信息应用',
-							autogenerate: { directory: 'chapter-05' },
-						},
-						{
-							label: '第6章 信息安全',
-							autogenerate: { directory: 'chapter-06' },
-						},
-						{
-							label: '第7章 运行维护',
-							autogenerate: { directory: 'chapter-07' },
-						},
-					],
-				},
-				{
-					label: '📕 监理知识篇',
-					collapsed: false,
-					items: [
-						{
-							label: '第8章 监理概论',
-							autogenerate: { directory: 'chapter-08' },
-						},
-						{
-							label: '第9章 质量控制与验收',
-							autogenerate: { directory: 'chapter-09' },
-						},
-						{
-							label: '第10章 进度与成本',
-							autogenerate: { directory: 'chapter-10' },
-						},
-						{
-							label: '第11章 合同与知识产权',
-							link: '/chapter-11/01-contract-ip/',
-						},
-						{
-							label: '第12章 信息与资料管理',
-							link: '/chapter-12/01-information-mgmt/',
-						},
-						{
-							label: '第13章 组织协调与沟通',
-							link: '/chapter-13/01-coordination-communication/',
-						},
-					],
-				},
-				{
-					label: '📕 高级监理篇',
-					collapsed: false,
-					items: [
-						{
-							label: '第14章 信息管理',
-							autogenerate: { directory: 'chapter-14' },
-						},
-						{
-							label: '第15章 组织协调',
-							autogenerate: { directory: 'chapter-15' },
-						},
-						{
-							label: '第16章 项目管理',
-							autogenerate: { directory: 'chapter-16' },
-						},
-						{
-							label: '第17章 变更控制',
-							autogenerate: { directory: 'chapter-17' },
-						},
-						{
-							label: '第18章 风险管理',
-							autogenerate: { directory: 'chapter-18' },
-						},
-						{
-							label: '第19章 监理支撑要素',
-							autogenerate: { directory: 'chapter-19' },
-						},
-						{
-							label: '第20章 监理基础工作',
-							autogenerate: { directory: 'chapter-20' },
-						},
-						{
-							label: '第21章 基础设施监理',
-							autogenerate: { directory: 'chapter-21' },
-						},
-						{
-							label: '第22章 软件工程监理',
-							autogenerate: { directory: 'chapter-22' },
-						},
-						{
-							label: '第23章 数据中心监理',
-							autogenerate: { directory: 'chapter-23' },
-						},
-						{
-							label: '第24章 信息安全监理',
-							autogenerate: { directory: 'chapter-24' },
-						},
-						{
-							label: '第25章 运行维护监理',
-							autogenerate: { directory: 'chapter-25' },
-						},
-					],
-				},
-			],
-			
-			// 自定义 CSS
-			customCss: ['./src/styles/custom.css'],
-			
-			// 默认语言
-			defaultLocale: 'root',
-			locales: {
-				root: {
-					label: '简体中文',
-					lang: 'zh-CN',
-				},
-			},
-			
-			// 编辑链接配置
-			editLink: {
-				baseUrl: 'https://github.com/daiwanxing/ruankao/edit/main/',
-			},
-			
-			// 最后更新时间
-			lastUpdated: true,
-		}),
-	],
-
-	vite: {
-		plugins: [
-			VitePWA({
-				registerType: 'autoUpdate',
-				devOptions: {
-					enabled: false,
-				},
-				manifest: {
-					name: '计算机系统监理师备考指南',
-					short_name: '监理师备考',
-					description: '系统化的计算机系统监理师考试复习指南，支持离线访问',
-					theme_color: '#1e293b',
-					background_color: '#0f172a',
-					display: 'standalone',
-					orientation: 'portrait-primary',
-					scope: '/',
-					start_url: '/',
-					lang: 'zh-CN',
-					categories: ['education', 'reference'],
-					icons: [
-						{
-							src: '/pwa-icons/icon-192x192.png',
-							sizes: '192x192',
-							type: 'image/png',
-							purpose: 'any',
-						},
-						{
-							src: '/pwa-icons/icon-192x192-maskable.png',
-							sizes: '192x192',
-							type: 'image/png',
-							purpose: 'maskable',
-						},
-						{
-							src: '/pwa-icons/icon-512x512.png',
-							sizes: '512x512',
-							type: 'image/png',
-							purpose: 'any',
-						},
-						{
-							src: '/pwa-icons/icon-512x512-maskable.png',
-							sizes: '512x512',
-							type: 'image/png',
-							purpose: 'maskable',
-						},
-						{
-							src: '/pwa-icons/apple-touch-icon.png',
-							sizes: '180x180',
-							type: 'image/png',
-						},
-					],
-				},
-				workbox: {
-					cacheId: 'supervision-teaching-site',
-					cleanupOutdatedCaches: true,
-					skipWaiting: true,
-					clientsClaim: true,
-					navigationPreload: true,
-					globPatterns: [
-						'**/*.{html,css,js,woff,woff2,ttf,eot,ico}',
-						'**/*.{png,jpg,jpeg,gif,svg,webp}',
-						'**/pagefind/**/*.{js,json,pf_meta,pf_index,pf_fragment}',
-					],
-					globIgnores: [
-						'**/*.pdf',
-						'**/01.pdf',
-						'**/02.pdf',
-					],
-					maximumFileSizeToCacheInBytes: 2 * 1024 * 1024,
-					runtimeCaching: [
-						{
-							urlPattern: /^https:\/\/.*\.html$/,
-							handler: 'NetworkFirst',
-							options: {
-								cacheName: 'html-cache',
-								expiration: {
-									maxEntries: 100,
-									maxAgeSeconds: 7 * 24 * 60 * 60,
-								},
-								networkTimeoutSeconds: 5,
-							},
-						},
-						{
-							urlPattern: /\.(?:js|css)$/,
-							handler: 'StaleWhileRevalidate',
-							options: {
-								cacheName: 'static-resources',
-								expiration: {
-									maxEntries: 200,
-									maxAgeSeconds: 30 * 24 * 60 * 60,
-								},
-							},
-						},
-						{
-							urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|ico)$/,
-							handler: 'CacheFirst',
-							options: {
-								cacheName: 'image-cache',
-								expiration: {
-									maxEntries: 100,
-									maxAgeSeconds: 60 * 24 * 60 * 60,
-								},
-							},
-						},
-						{
-							urlPattern: /\.(?:woff|woff2|ttf|eot)$/,
-							handler: 'CacheFirst',
-							options: {
-								cacheName: 'font-cache',
-								expiration: {
-									maxEntries: 30,
-									maxAgeSeconds: 365 * 24 * 60 * 60,
-								},
-							},
-						},
-						{
-							urlPattern: /\/pagefind\/.*/,
-							handler: 'StaleWhileRevalidate',
-							options: {
-								cacheName: 'pagefind-cache',
-								expiration: {
-									maxEntries: 100,
-									maxAgeSeconds: 7 * 24 * 60 * 60,
-								},
-							},
-						},
-						{
-							urlPattern: /\.pdf$/,
-							handler: 'NetworkOnly',
-						},
-					],
-				},
-			}),
-		],
-	},
+  vite: {
+    build: {
+      rollupOptions: {
+        external: ['/pagefind/pagefind.js'],
+      },
+    },
+    plugins: [
+      VitePWA({
+        registerType: 'autoUpdate',
+        devOptions: {
+          enabled: false,
+        },
+        manifest: {
+          name: '计算机系统监理师备考指南',
+          short_name: '监理师备考',
+          description: '系统化的计算机系统监理师考试复习指南，支持离线访问',
+          theme_color: '#000000',
+          background_color: '#000000',
+          display: 'standalone',
+          orientation: 'portrait-primary',
+          scope: '/',
+          start_url: '/',
+          lang: 'zh-CN',
+          categories: ['education', 'reference'],
+          icons: [
+            {
+              src: '/pwa-icons/icon-192x192.png',
+              sizes: '192x192',
+              type: 'image/png',
+              purpose: 'any',
+            },
+            {
+              src: '/pwa-icons/icon-192x192-maskable.png',
+              sizes: '192x192',
+              type: 'image/png',
+              purpose: 'maskable',
+            },
+            {
+              src: '/pwa-icons/icon-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'any',
+            },
+            {
+              src: '/pwa-icons/icon-512x512-maskable.png',
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'maskable',
+            },
+            {
+              src: '/pwa-icons/apple-touch-icon.png',
+              sizes: '180x180',
+              type: 'image/png',
+            },
+          ],
+        },
+        workbox: {
+          cacheId: 'supervision-teaching-site',
+          cleanupOutdatedCaches: true,
+          skipWaiting: true,
+          clientsClaim: true,
+          navigationPreload: true,
+          globPatterns: [
+            '**/*.{html,css,js,woff,woff2,ttf,eot,ico}',
+            '**/*.{png,jpg,jpeg,gif,svg,webp}',
+            '**/pagefind/**/*.{js,json,pf_meta,pf_index,pf_fragment}',
+          ],
+          globIgnores: [
+            '**/*.pdf',
+            '**/01.pdf',
+            '**/02.pdf',
+          ],
+          maximumFileSizeToCacheInBytes: 2 * 1024 * 1024,
+          runtimeCaching: [
+            {
+              urlPattern: /^https:\/\/.*\.html$/,
+              handler: 'NetworkFirst',
+              options: {
+                cacheName: 'html-cache',
+                expiration: {
+                  maxEntries: 100,
+                  maxAgeSeconds: 7 * 24 * 60 * 60,
+                },
+                networkTimeoutSeconds: 5,
+              },
+            },
+            {
+              urlPattern: /\.(?:js|css)$/,
+              handler: 'StaleWhileRevalidate',
+              options: {
+                cacheName: 'static-resources',
+                expiration: {
+                  maxEntries: 200,
+                  maxAgeSeconds: 30 * 24 * 60 * 60,
+                },
+              },
+            },
+            {
+              urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|ico)$/,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'image-cache',
+                expiration: {
+                  maxEntries: 100,
+                  maxAgeSeconds: 60 * 24 * 60 * 60,
+                },
+              },
+            },
+            {
+              urlPattern: /\.(?:woff|woff2|ttf|eot)$/,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'font-cache',
+                expiration: {
+                  maxEntries: 30,
+                  maxAgeSeconds: 365 * 24 * 60 * 60,
+                },
+              },
+            },
+            {
+              urlPattern: /\/pagefind\/.*/,
+              handler: 'StaleWhileRevalidate',
+              options: {
+                cacheName: 'pagefind-cache',
+                expiration: {
+                  maxEntries: 100,
+                  maxAgeSeconds: 7 * 24 * 60 * 60,
+                },
+              },
+            },
+            {
+              urlPattern: /\.pdf$/,
+              handler: 'NetworkOnly',
+            },
+          ],
+        },
+      }),
+    ],
+  },
 });

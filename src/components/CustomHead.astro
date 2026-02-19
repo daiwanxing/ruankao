@@ -1,10 +1,5 @@
 ---
-import type { Props } from '@astrojs/starlight/props';
-import Default from '@astrojs/starlight/components/Head.astro';
-import { ClientRouter } from 'astro:transitions';
-import OfflineIndicator from './OfflineIndicator.astro';
+// CustomHead.astro - 保留用于兼容性
+// 实际 head 内容在 DocLayout.astro 中实现
 ---
-
-<Default {...Astro.props}><slot /></Default>
-<ClientRouter />
-<OfflineIndicator />
+<!-- Head content is now in DocLayout.astro -->

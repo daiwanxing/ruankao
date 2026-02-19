@@ -67,6 +67,10 @@ const storageKey = `exercise_${questionId}`;
 
       options.forEach(option => {
         const optElement = option as HTMLLIElement;
+        optElement.setAttribute('role', 'button');
+        optElement.setAttribute('tabindex', '0');
+        optElement.setAttribute('aria-pressed', 'false');
+
         optElement.addEventListener('click', () => {
           if (sessionStorage.getItem(storageKey || '')) {
             return;
@@ -77,6 +81,22 @@ const storageKey = `exercise_${questionId}`;
 
           sessionStorage.setItem(storageKey || '', selectedOption);
           lockExercise(element, options, resultSection, resultHeader, explanationContent, selectedOption, correctAnswer || '');
+        });
+
+        // 键盘支持：Enter 和空格键触发选择
+        optElement.addEventListener('keydown', (e) => {
+          if (e instanceof KeyboardEvent && (e.key === 'Enter' || e.key === ' ')) {
+            e.preventDefault();
+            if (sessionStorage.getItem(storageKey || '')) {
+              return;
+            }
+
+            const selectedOption = optElement.dataset.option;
+            if (!selectedOption) return;
+
+            sessionStorage.setItem(storageKey || '', selectedOption);
+            lockExercise(element, options, resultSection, resultHeader, explanationContent, selectedOption, correctAnswer || '');
+          }
         });
       });
     });
@@ -132,46 +152,51 @@ const storageKey = `exercise_${questionId}`;
 
 <style>
   .exercise-box {
-    border: 1px solid var(--sl-color-gray-5);
-    border-radius: 16px;
-    padding: 1.5rem;
-    margin: 2rem 0;
-    background: var(--sl-color-bg);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    margin: var(--space-8) 0;
+    background: var(--color-bg-card);
+    transition: all var(--transition-fast);
   }
 
   .exercise-box:hover {
-    border-color: rgba(99, 102, 241, 0.3);
-    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
+    border-color: var(--color-border-hover);
+  }
+
+  /* 焦点指示器 */
+  .exercise-box:focus-within {
+    outline: 2px solid var(--color-brand-primary);
+    outline-offset: 2px;
   }
 
   .question-header {
     display: flex;
     align-items: flex-start;
-    gap: 0.75rem;
-    margin-bottom: 1.25rem;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
   }
 
   .question-badge {
     display: inline-flex;
     align-items: center;
-    padding: 0.25rem 0.625rem;
-    font-size: 0.7rem;
-    font-weight: 600;
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-xs);
+    font-weight: var(--font-semibold);
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    border-radius: 6px;
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--color-brand-primary) 0%, var(--color-brand-purple) 100%);
     color: white;
     flex-shrink: 0;
-    margin-top: 0.25rem;
+    margin-top: var(--space-1);
   }
 
   .question {
     margin: 0;
-    color: var(--sl-color-white);
-    font-size: 1.05rem;
-    font-weight: 500;
+    color: var(--color-text-emphasized);
+    font-size: var(--text-base);
+    font-weight: var(--font-medium);
     line-height: 1.6;
   }
 
@@ -180,24 +205,29 @@ const storageKey = `exercise_${questionId}`;
     padding-left: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.625rem;
+    gap: var(--space-3);
   }
 
   .option-item {
     display: flex;
     align-items: flex-start;
-    padding: 0.875rem 1rem;
-    background: var(--sl-color-gray-6);
+    padding: var(--space-4);
+    background: var(--color-bg-elevated);
     border: 1px solid transparent;
-    border-radius: 10px;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-fast);
     cursor: pointer;
   }
 
   .option-item:hover {
-    background: var(--sl-color-gray-5);
-    border-color: rgba(99, 102, 241, 0.4);
+    background: var(--color-bg-card);
+    border-color: var(--color-brand-primary);
     transform: translateX(4px);
+  }
+
+  .option-item:focus-visible {
+    outline: 2px solid var(--color-brand-primary);
+    outline-offset: 2px;
   }
 
   .exercise-box.is-locked .option-item {
@@ -208,7 +238,7 @@ const storageKey = `exercise_${questionId}`;
 
   .exercise-box.is-locked .option-item:hover {
     transform: none;
-    background: var(--sl-color-gray-6);
+    background: var(--color-bg-elevated);
     border-color: transparent;
   }
 
@@ -233,14 +263,14 @@ const storageKey = `exercise_${questionId}`;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 22px;
-    height: 22px;
-    border-radius: 6px;
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--color-brand-primary) 0%, var(--color-brand-purple) 100%);
     color: white;
-    font-weight: 600;
-    font-size: 0.75rem;
-    margin-right: 0.75rem;
+    font-weight: var(--font-semibold);
+    font-size: var(--text-xs);
+    margin-right: var(--space-3);
     flex-shrink: 0;
   }
 
@@ -255,15 +285,15 @@ const storageKey = `exercise_${questionId}`;
   .option-text {
     flex: 1;
     line-height: 1.6;
-    font-size: 0.95rem;
-    color: var(--sl-color-gray-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
   }
 
   .result-section {
-    margin-top: 1.25rem;
-    padding: 1rem;
-    border-radius: 10px;
-    animation: fadeIn 0.3s ease;
+    margin-top: var(--space-5);
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    animation: fadeIn var(--transition-base);
   }
 
   @keyframes fadeIn {
@@ -274,10 +304,10 @@ const storageKey = `exercise_${questionId}`;
   .result-header {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    font-weight: 500;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    font-weight: var(--font-medium);
   }
 
   .result-header.correct {
@@ -291,16 +321,16 @@ const storageKey = `exercise_${questionId}`;
   }
 
   .result-icon {
-    font-weight: 700;
+    font-weight: var(--font-bold);
   }
 
   .explanation-content {
-    margin-top: 1rem;
-    padding: 1rem;
+    margin-top: var(--space-4);
+    padding: var(--space-4);
     background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 10px;
-    animation: slideDown 0.3s ease;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    animation: slideDown var(--transition-base);
   }
 
   @keyframes slideDown {
@@ -311,40 +341,53 @@ const storageKey = `exercise_${questionId}`;
   .explanation-content p {
     margin: 0;
     line-height: 1.8;
-    color: var(--sl-color-gray-3);
-    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
   }
 
   .explanation-label {
     display: inline-block;
-    padding: 0.125rem 0.5rem;
-    font-size: 0.7rem;
-    font-weight: 600;
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--text-xs);
+    font-weight: var(--font-semibold);
     letter-spacing: 0.03em;
     text-transform: uppercase;
-    border-radius: 4px;
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--color-brand-primary) 0%, var(--color-brand-purple) 100%);
     color: white;
-    margin-right: 0.5rem;
+    margin-right: var(--space-2);
   }
 
   /* 响应式 */
   @media (max-width: 768px) {
     .exercise-box {
-      padding: 1.25rem;
-      margin: 1.5rem 0;
+      padding: var(--space-5);
+      margin: var(--space-6) 0;
     }
 
     .question {
-      font-size: 1rem;
+      font-size: var(--text-sm);
     }
 
     .option-item {
-      padding: 0.75rem;
+      padding: var(--space-3);
+      min-height: 44px;
+      align-items: center;
     }
 
     .option-text {
-      font-size: 0.9rem;
+      font-size: var(--text-xs);
+    }
+  }
+
+  /* 减少动画（尊重用户偏好）*/
+  @media (prefers-reduced-motion: reduce) {
+    .exercise-box,
+    .option-item,
+    .result-section,
+    .explanation-content {
+      transition: none;
+      animation: none;
     }
   }
 </style>
