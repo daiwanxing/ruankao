@@ -131,6 +131,60 @@ export default defineConfig({
 						},
 					],
 				},
+				{
+					label: '📕 高级监理篇',
+					collapsed: false,
+					items: [
+						{
+							label: '第14章 信息管理',
+							autogenerate: { directory: 'chapter-14' },
+						},
+						{
+							label: '第15章 组织协调',
+							autogenerate: { directory: 'chapter-15' },
+						},
+						{
+							label: '第16章 项目管理',
+							autogenerate: { directory: 'chapter-16' },
+						},
+						{
+							label: '第17章 变更控制',
+							autogenerate: { directory: 'chapter-17' },
+						},
+						{
+							label: '第18章 风险管理',
+							autogenerate: { directory: 'chapter-18' },
+						},
+						{
+							label: '第19章 监理支撑要素',
+							autogenerate: { directory: 'chapter-19' },
+						},
+						{
+							label: '第20章 监理基础工作',
+							autogenerate: { directory: 'chapter-20' },
+						},
+						{
+							label: '第21章 基础设施监理',
+							autogenerate: { directory: 'chapter-21' },
+						},
+						{
+							label: '第22章 软件工程监理',
+							autogenerate: { directory: 'chapter-22' },
+						},
+						{
+							label: '第23章 数据中心监理',
+							autogenerate: { directory: 'chapter-23' },
+						},
+						{
+							label: '第24章 信息安全监理',
+							autogenerate: { directory: 'chapter-24' },
+						},
+						{
+							label: '第25章 运行维护监理',
+							autogenerate: { directory: 'chapter-25' },
+						},
+					],
+				},
 			],
 			
 			// 自定义 CSS
