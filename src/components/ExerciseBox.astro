@@ -19,7 +19,10 @@ const storageKey = `exercise_${questionId}`;
 ---
 
 <div class="exercise-box" data-question-id={questionId} data-correct-answer={answer} data-storage-key={storageKey}>
-  <h4 class="question">{question}</h4>
+  <div class="question-header">
+    <span class="question-badge">练习</span>
+    <h4 class="question">{question}</h4>
+  </div>
   <ul class="options">
     {options.map((opt, index) => {
       const optionLetter = String.fromCharCode(65 + index);
@@ -34,19 +37,17 @@ const storageKey = `exercise_${questionId}`;
   <div class="result-section" style="display: none;">
     <div class="result-header"></div>
     <div class="explanation-content" style="display: none;">
-      {explanation && <p><strong>📖 解析：</strong><span set:html={explanation.replace(/\\n|\n/g, '<br />')} /></p>}
+      {explanation && <p><span class="explanation-label">解析</span><span set:html={explanation.replace(/\\n|\n/g, '<br />')} /></p>}
     </div>
   </div>
 </div>
 
 <script>
   function initExerciseBoxes() {
-    // 获取所有练习框
     const exerciseBoxes = document.querySelectorAll('.exercise-box');
 
     exerciseBoxes.forEach(box => {
       const element = box as HTMLElement;
-      // 避免重复绑定
       if (element.dataset.initialized) return;
       element.dataset.initialized = 'true';
 
@@ -58,19 +59,15 @@ const storageKey = `exercise_${questionId}`;
       const resultHeader = element.querySelector('.result-header') as HTMLElement;
       const explanationContent = element.querySelector('.explanation-content') as HTMLElement;
 
-      // 从 sessionStorage 恢复答案
       const savedAnswer = sessionStorage.getItem(storageKey || '');
 
       if (savedAnswer) {
-        // 已答题过，锁定界面
         lockExercise(element, options, resultSection, resultHeader, explanationContent, savedAnswer, correctAnswer || '');
       }
 
-      // 为每个选项添加点击事件
       options.forEach(option => {
         const optElement = option as HTMLLIElement;
         optElement.addEventListener('click', () => {
-          // 如果已答题，忽略点击
           if (sessionStorage.getItem(storageKey || '')) {
             return;
           }
@@ -78,10 +75,7 @@ const storageKey = `exercise_${questionId}`;
           const selectedOption = optElement.dataset.option;
           if (!selectedOption) return;
 
-          // 保存到 sessionStorage（一旦保存就无法更改）
           sessionStorage.setItem(storageKey || '', selectedOption);
-
-          // 锁定界面
           lockExercise(element, options, resultSection, resultHeader, explanationContent, selectedOption, correctAnswer || '');
         });
       });
@@ -89,25 +83,22 @@ const storageKey = `exercise_${questionId}`;
   }
 
   function lockExercise(
-    element: HTMLElement, 
-    options: NodeListOf<Element>, 
-    resultSection: HTMLElement, 
-    resultHeader: HTMLElement, 
-    explanationContent: HTMLElement, 
-    selectedOption: string, 
+    element: HTMLElement,
+    options: NodeListOf<Element>,
+    resultSection: HTMLElement,
+    resultHeader: HTMLElement,
+    explanationContent: HTMLElement,
+    selectedOption: string,
     correctAnswer: string
   ) {
     const isCorrect = selectedOption === correctAnswer;
 
-    // 添加锁定类
     element.classList.add('is-locked');
 
-    // 禁用所有选项的点击
     options.forEach(opt => {
       const optElement = opt as HTMLLIElement;
       const optLetter = optElement.dataset.option;
 
-      // 显示已选答案的样式
       if (optLetter === selectedOption) {
         opt.classList.add('selected');
         if (isCorrect) {
@@ -116,171 +107,199 @@ const storageKey = `exercise_${questionId}`;
           opt.classList.add('incorrect');
         }
       } else if (optLetter === correctAnswer && !isCorrect) {
-        // 显示正确答案
         opt.classList.add('correct');
       }
     });
 
-    // 显示结果区域
     if (resultSection) resultSection.style.display = 'block';
 
     if (resultHeader) {
       if (isCorrect) {
-        resultHeader.innerHTML = '<span class="result-icon">✅</span> <span class="result-text">回答正确！</span>';
+        resultHeader.innerHTML = '<span class="result-icon">✓</span> <span class="result-text">回答正确</span>';
         resultHeader.className = 'result-header correct';
       } else {
-        resultHeader.innerHTML = `<span class="result-icon">❌</span> <span class="result-text">回答错误。正确答案是 ${correctAnswer}</span>`;
+        resultHeader.innerHTML = `<span class="result-icon">✗</span> <span class="result-text">正确答案是 ${correctAnswer}</span>`;
         resultHeader.className = 'result-header incorrect';
       }
     }
 
-    // 显示解析
     if (explanationContent) explanationContent.style.display = 'block';
   }
 
-  // 初始化并监听过渡事件
   initExerciseBoxes();
   document.addEventListener('astro:page-load', initExerciseBoxes);
 </script>
 
 <style>
   .exercise-box {
-    border: 2px solid var(--sl-color-gray-5);
-    border-radius: 12px;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 16px;
     padding: 1.5rem;
-    margin: 1.5rem 0;
+    margin: 2rem 0;
     background: var(--sl-color-bg);
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .exercise-box:hover {
-    border-color: var(--sl-color-accent);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
+  }
+
+  .question-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .question-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-radius: 6px;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+    color: white;
+    flex-shrink: 0;
+    margin-top: 0.25rem;
   }
 
   .question {
-    margin-top: 0;
-    margin-bottom: 1rem;
+    margin: 0;
     color: var(--sl-color-white);
-    font-size: 1.1rem;
+    font-size: 1.05rem;
+    font-weight: 500;
+    line-height: 1.6;
   }
 
   .options {
     list-style: none;
     padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
   }
 
   .option-item {
     display: flex;
     align-items: flex-start;
-    padding: 0.75rem 1rem;
-    margin: 0.5rem 0;
+    padding: 0.875rem 1rem;
     background: var(--sl-color-gray-6);
-    border-radius: 8px;
-    border-left: 3px solid var(--sl-color-gray-4);
-    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
   }
 
   .option-item:hover {
     background: var(--sl-color-gray-5);
-    border-left-color: var(--sl-color-accent);
+    border-color: rgba(99, 102, 241, 0.4);
     transform: translateX(4px);
   }
 
-  /* 已答题后锁定状态 - 禁用所有选项的交互 */
   .exercise-box.is-locked .option-item {
-    cursor: not-allowed;
+    cursor: default;
     pointer-events: none;
+    opacity: 0.6;
   }
 
-  /* 锁定状态下不应用 hover 效果 */
   .exercise-box.is-locked .option-item:hover {
-    background: var(--sl-color-gray-6);
-    border-left-color: var(--sl-color-gray-4);
     transform: none;
+    background: var(--sl-color-gray-6);
+    border-color: transparent;
   }
 
-  /* 正确选项样式 - 柔和的绿色系 */
-  .option-item.correct {
-    background: rgba(34, 197, 94, 0.15);
-    border-left-color: #22c55e;
+  .exercise-box.is-locked .option-item.correct {
+    opacity: 1;
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(16, 185, 129, 0.1) 100%);
+    border-color: rgba(34, 197, 94, 0.4);
   }
 
-  /* 错误选项样式 - 柔和的红色系 */
-  .option-item.incorrect {
-    background: rgba(239, 68, 68, 0.15);
-    border-left-color: #ef4444;
+  .exercise-box.is-locked .option-item.incorrect {
+    opacity: 1;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.1) 100%);
+    border-color: rgba(239, 68, 68, 0.4);
+  }
+
+  .exercise-box.is-locked .option-item.correct:hover,
+  .exercise-box.is-locked .option-item.incorrect:hover {
+    transform: none;
   }
 
   .option-indicator {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: var(--sl-color-gray-5);
-    color: var(--sl-color-white);
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+    color: white;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     margin-right: 0.75rem;
     flex-shrink: 0;
   }
 
   .option-item.correct .option-indicator {
-    background: rgba(34, 197, 94, 0.2);
-    color: #16a34a;
+    background: linear-gradient(135deg, #22c55e 0%, #10b981 100%);
   }
 
   .option-item.incorrect .option-indicator {
-    background: rgba(239, 68, 68, 0.2);
-    color: #dc2626;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
   }
 
   .option-text {
     flex: 1;
     line-height: 1.6;
+    font-size: 0.95rem;
+    color: var(--sl-color-gray-2);
   }
 
   .result-section {
     margin-top: 1.25rem;
     padding: 1rem;
-    border-radius: 8px;
+    border-radius: 10px;
     animation: fadeIn 0.3s ease;
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
+    from { opacity: 0; transform: translateY(-8px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .result-header.correct {
-    background: rgba(34, 197, 94, 0.1);
+  .result-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     padding: 0.75rem 1rem;
     border-radius: 8px;
-    color: #16a34a;
-    font-weight: 600;
+    font-weight: 500;
+  }
+
+  .result-header.correct {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(16, 185, 129, 0.1) 100%);
+    color: #4ade80;
   }
 
   .result-header.incorrect {
-    background: rgba(239, 68, 68, 0.1);
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    color: #dc2626;
-    font-weight: 600;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.1) 100%);
+    color: #f87171;
   }
 
   .result-icon {
-    margin-right: 0.5rem;
+    font-weight: 700;
   }
 
   .explanation-content {
     margin-top: 1rem;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 8px;
-    border-left: 3px solid var(--sl-color-accent);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
     animation: slideDown 0.3s ease;
   }
 
@@ -292,51 +311,40 @@ const storageKey = `exercise_${questionId}`;
   .explanation-content p {
     margin: 0;
     line-height: 1.8;
-    color: var(--sl-color-gray-2);
-    font-size: 0.95rem;
+    color: var(--sl-color-gray-3);
+    font-size: 0.9rem;
   }
 
-  .explanation-content strong {
-    color: var(--sl-color-accent);
+  .explanation-label {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    font-size: 0.7rem;
     font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+    color: white;
+    margin-right: 0.5rem;
   }
 
-  /* 暗黑模式 - 柔和的色系 */
-  :global([data-theme='dark']) .option-item.correct {
-    background: rgba(34, 197, 94, 0.2);
-    border-left-color: #4ade80;
-  }
+  /* 响应式 */
+  @media (max-width: 768px) {
+    .exercise-box {
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+    }
 
-  :global([data-theme='dark']) .option-item.incorrect {
-    background: rgba(239, 68, 68, 0.2);
-    border-left-color: #f87171;
-  }
+    .question {
+      font-size: 1rem;
+    }
 
-  :global([data-theme='dark']) .option-item.correct .option-indicator {
-    background: rgba(34, 197, 94, 0.3);
-    color: #4ade80;
-  }
+    .option-item {
+      padding: 0.75rem;
+    }
 
-  :global([data-theme='dark']) .option-item.incorrect .option-indicator {
-    background: rgba(239, 68, 68, 0.3);
-    color: #f87171;
-  }
-
-  :global([data-theme='dark']) .result-header.correct {
-    background: rgba(34, 197, 94, 0.2);
-    color: #4ade80;
-  }
-
-  :global([data-theme='dark']) .result-header.incorrect {
-    background: rgba(239, 68, 68, 0.2);
-    color: #f87171;
-  }
-
-  :global([data-theme='dark']) .explanation-content {
-    background: rgba(255, 255, 255, 0.08);
-  }
-
-  :global([data-theme='dark']) .explanation-content p {
-    color: var(--sl-color-gray-2);
+    .option-text {
+      font-size: 0.9rem;
+    }
   }
 </style>

@@ -8,19 +8,39 @@ interface Props {
 
 const { title, formula, importance = 5, category = 'formula' } = Astro.props;
 
-const categoryStyles = {
-  'formula': 'memory-card-formula',
-  'tip': 'memory-card-tip',
-  'key-point': 'memory-card-keypoint',
+const categoryConfig = {
+  'formula': {
+    gradient: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
+    gradientLight: 'linear-gradient(135deg, #8b5cf6 0%, #c084fc 100%)',
+    borderColor: 'rgba(139, 92, 246, 0.4)',
+    label: '公式'
+  },
+  'tip': {
+    gradient: 'linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%)',
+    gradientLight: 'linear-gradient(135deg, #38bdf8 0%, #7dd3fc 100%)',
+    borderColor: 'rgba(14, 165, 233, 0.4)',
+    label: '口诀'
+  },
+  'key-point': {
+    gradient: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)',
+    gradientLight: 'linear-gradient(135deg, #fbbf24 0%, #fcd34d 100%)',
+    borderColor: 'rgba(245, 158, 11, 0.4)',
+    label: '重点'
+  }
 };
+
+const config = categoryConfig[category];
 ---
 
-<div class={`memory-card ${categoryStyles[category]}`}>
+<div class={`memory-card memory-card-${category}`} style={`--card-gradient: ${config.gradient}; --card-gradient-light: ${config.gradientLight}; --card-border: ${config.borderColor};`}>
   <div class="card-header">
+    <div class="card-meta">
+      <span class="category-badge">{config.label}</span>
+      <span class="importance" title={`重要程度：${importance}/5`}>
+        {'★'.repeat(importance)}{'☆'.repeat(5 - importance)}
+      </span>
+    </div>
     <h4 class="card-title">{title}</h4>
-    <span class="importance" title={`重要程度：${importance}/5`}>
-      {'⭐'.repeat(importance)}
-    </span>
   </div>
   <div class="card-body">
     <p class="formula">{formula}</p>
@@ -29,119 +49,111 @@ const categoryStyles = {
 
 <style>
   .memory-card {
-    border-radius: 12px;
+    position: relative;
+    border-radius: 16px;
     padding: 1.5rem;
     margin: 1.5rem 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: var(--sl-color-gray-6);
+    border: 1px solid var(--card-border);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
   }
-  
+
+  .memory-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--card-gradient);
+    opacity: 0.8;
+  }
+
   .memory-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 12px 40px rgba(99, 102, 241, 0.15);
   }
-  
-  .memory-card-formula {
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-    border-left: 6px solid #f59e0b;
-  }
-  
-  .memory-card-tip {
-    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-    border-left: 6px solid #3b82f6;
-  }
-  
-  .memory-card-keypoint {
-    background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
-    border-left: 6px solid #ec4899;
-  }
-  
+
   .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 1rem;
   }
-  
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .category-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-radius: 6px;
+    background: var(--card-gradient);
+    color: white;
+  }
+
+  .importance {
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: var(--color-accent-light);
+  }
+
   .card-title {
     margin: 0;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #1f2937;
-  }
-  
-  .importance {
     font-size: 1rem;
-    line-height: 1;
+    font-weight: 600;
+    color: var(--sl-color-white);
+    line-height: 1.4;
   }
-  
-  .formula {
-    font-size: 1.25rem;
-    font-weight: 700;
-    text-align: center;
-    margin: 0;
+
+  .card-body {
     padding: 1rem;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
   }
-  
-  .memory-card-formula .formula {
-    color: #92400e;
+
+  .formula {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.6;
+    background: var(--card-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
-  
-  .memory-card-tip .formula {
-    color: #1e40af;
-  }
-  
-  .memory-card-keypoint .formula {
-    color: #9f1239;
-  }
-  
+
   /* 响应式 */
   @media (max-width: 768px) {
     .memory-card {
-      padding: 1rem;
+      padding: 1.25rem;
     }
-    
+
     .card-title {
+      font-size: 0.95rem;
+    }
+
+    .formula {
       font-size: 1rem;
     }
-    
-    .formula {
-      font-size: 1.1rem;
-      padding: 0.75rem;
-    }
   }
-  
-  /* 暗黑模式 */
-  :global([data-theme='dark']) .memory-card-formula {
-    background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
+
+  /* 暗黑模式优化 */
+  :global([data-theme='dark']) .memory-card {
+    background: linear-gradient(180deg, rgba(30, 30, 40, 0.8) 0%, rgba(20, 20, 30, 0.9) 100%);
   }
-  
-  :global([data-theme='dark']) .memory-card-formula .card-title,
-  :global([data-theme='dark']) .memory-card-formula .formula {
-    color: #fef3c7;
-  }
-  
-  :global([data-theme='dark']) .memory-card-tip {
-    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
-  }
-  
-  :global([data-theme='dark']) .memory-card-tip .card-title,
-  :global([data-theme='dark']) .memory-card-tip .formula {
-    color: #dbeafe;
-  }
-  
-  :global([data-theme='dark']) .memory-card-keypoint {
-    background: linear-gradient(135deg, #831843 0%, #9f1239 100%);
-  }
-  
-  :global([data-theme='dark']) .memory-card-keypoint .card-title,
-  :global([data-theme='dark']) .memory-card-keypoint .formula {
-    color: #fce7f3;
-  }
-  
-  :global([data-theme='dark']) .formula {
+
+  :global([data-theme='dark']) .card-body {
     background: rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.05);
   }
 </style>

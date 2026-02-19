@@ -18,6 +18,29 @@ export default defineConfig({
 
 			// PWA 相关 meta 标签
 			head: [
+				// Google Fonts - 优雅杂志风字体
+				{
+					tag: 'link',
+					attrs: {
+						rel: 'preconnect',
+						href: 'https://fonts.googleapis.com',
+					},
+				},
+				{
+					tag: 'link',
+					attrs: {
+						rel: 'preconnect',
+						href: 'https://fonts.gstatic.com',
+						crossorigin: 'anonymous',
+					},
+				},
+				{
+					tag: 'link',
+					attrs: {
+						rel: 'stylesheet',
+						href: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Serif+SC:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap',
+					},
+				},
 				{
 					tag: 'script',
 					attrs: {
@@ -65,6 +88,7 @@ export default defineConfig({
 					items: [
 						{ label: '学习指南', link: '/guides/study-guide/' },
 						{ label: '考试大纲', link: '/guides/exam-outline/' },
+						{ label: '备考突破指南', link: '/guides/exam-breakthrough/' },
 					],
 				},
 				{
